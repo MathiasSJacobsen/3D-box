@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import hd from "./hotdrink/hotdrink";
   import type HDValue from "./hotdrink/hotdrink.js";
+  import type { Searchdims } from "./types/SearchDim";
   import type { UnsplashSearchResponseType } from "./types/UnsplashTypes";
 
   let system = new hd.ConstraintSystem();
@@ -62,8 +63,10 @@
 
   let serachWidth = "";
   let searchHeight = "";
+  let searchBoth = "";
+  let likes = 0;
 
-  const fetchPicture = async (searchWord: string, dim: string) => {
+  const fetchPicture = async (searchWord: string, dim: Searchdims) => {
     var myHeaders = new Headers();
     myHeaders.append(
       "Authorization",
@@ -76,36 +79,75 @@
     };
     const per_page = 1;
     const page = 1;
-    const response = await fetch(`https://api.unsplash.com/search/photos?page=${page}&query=${searchWord}&per_page=${per_page}`, requestOptions)
-    const picture: UnsplashSearchResponseType = await response.json()
-    
-      if (dim ==='width') width = picture.results[0].width;
-      else if (dim === 'height') height = picture.results[0].height;     
-      else console.log('didnt find the property');
-    
+    const response = await fetch(
+      `https://api.unsplash.com/search/photos?page=${page}&query=${searchWord}&per_page=${per_page}`,
+      requestOptions
+    );
+    const picture: UnsplashSearchResponseType = await response.json();
+
+    if (dim === "width") width = picture.results[0].width;
+    else if (dim === "height") height = picture.results[0].height;
+    else if (dim === "both") {
+      width = picture.results[0].width;
+      height = picture.results[0].height;
+      likes = picture.results[0].likes;
+    } else console.log("didnt find the property");
   };
   // everytime the "svelte-variable" changes the hd is also upadted
   $: {
-    setHDValue(HDw, width)
+    setHDValue(HDw, width);
   }
   $: {
-    setHDValue(HDh, height)
+    setHDValue(HDh, height);
   }
   $: {
-    setHDValue(HDd, depth)
+    setHDValue(HDd, depth);
   }
+
+  let bothFromAPI = false;
+  $: disabledButtonIfBothFromAPI = bothFromAPI ? true : false;
+
+  const disableButtons = () => {
+    bothFromAPI = !bothFromAPI;
+  };
 </script>
 
 <main>
   <h1>3D-Box</h1>
+  <p>
+    <input
+      bind:value={searchBoth}
+      type="text"
+      placeholder="alves"
+      disabled={!bothFromAPI}
+    />
+    <input type="checkbox" class="larger" on:change={disableButtons} /> Get both
+    values from REST API
+  </p>
+  <p>
+    <button
+      disabled={!bothFromAPI}
+      on:click={() => fetchPicture(searchBoth, "both")}>BOTH</button
+    >
+  </p>
   <p>
     Width: <input
       bind:value={width}
       type="number"
       id="width"
       placeholder="width"
-    /> <input bind:value={serachWidth} type="text" placeholder="bookshelf" />
-    <button on:click={() => fetchPicture(serachWidth, "width")} type="submit">Get from REST API</button>
+    />
+    <input
+      bind:value={serachWidth}
+      type="text"
+      placeholder="bookshelf"
+      disabled={disabledButtonIfBothFromAPI}
+    />
+    <button
+      on:click={() => fetchPicture(serachWidth, "width")}
+      type="submit"
+      disabled={disabledButtonIfBothFromAPI}>Get from REST API</button
+    >
   </p>
   <p>
     Height: <input
@@ -113,8 +155,18 @@
       type="number"
       id="height"
       placeholder="height"
-    /> <input bind:value={searchHeight} type="text" placeholder="table" />
-    <button on:click={() => fetchPicture(searchHeight, "height")} type="submit">Get from REST API</button>
+    />
+    <input
+      bind:value={searchHeight}
+      type="text"
+      placeholder="table"
+      disabled={disabledButtonIfBothFromAPI}
+    />
+    <button
+      on:click={() => fetchPicture(searchHeight, "height")}
+      type="submit"
+      disabled={disabledButtonIfBothFromAPI}>Get from REST API</button
+    >
   </p>
   <p>
     Depth: <input
@@ -123,6 +175,13 @@
       id="depth"
       placeholder="depth"
     />
+    <button
+      on:click={() => {
+        depth = likes;
+      }}
+      type="submit"
+      disabled={!bothFromAPI}>Get from likes</button
+    >
   </p>
   <p>
     Volum: {HDv}
@@ -148,5 +207,9 @@
     main {
       max-width: none;
     }
+  }
+  input.larger {
+    width: 30px;
+    height: 30px;
   }
 </style>

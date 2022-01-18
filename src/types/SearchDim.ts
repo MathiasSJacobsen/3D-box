@@ -1,0 +1,1 @@
+export type Searchdims = "both" | "width" | "height"

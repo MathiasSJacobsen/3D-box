@@ -37,6 +37,14 @@
   let HDh: HDValue<number> = comp.vs.h.value;
   let height: number = 1;
 
+  $: {
+    console.log("---------------------");
+    console.log(`Value of width: ${width}`);
+    console.log(`Value of height: ${height}`);
+    console.log(`Value of depth: ${depth}`);
+    console.log("---------------------");
+  }
+
   onMount(() => {
     HDv.subscribe({
       next: (val: any) => {

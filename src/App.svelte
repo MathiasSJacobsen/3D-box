@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import hd from "./hotdrink/hotdrink";
   import type HDValue from "./hotdrink/hotdrink.js";
+  import type { UnsplashSearchResponseType } from "./types/UnsplashTypes";
 
   let system = new hd.ConstraintSystem();
 
@@ -59,7 +60,40 @@
     HDValue.set(n);
   }
 
-  let serachWidth = ''
+  let serachWidth = "";
+  let searchHeight = "";
+
+  const fetchPicture = async (searchWord: string, dim: string) => {
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      
+    );
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+    };
+    const per_page = 1;
+    const page = 1;
+    const response = await fetch(`https://api.unsplash.com/search/photos?page=${page}&query=${searchWord}&per_page=${per_page}`, requestOptions)
+    const picture: UnsplashSearchResponseType = await response.json()
+    
+      if (dim ==='width') width = picture.results[0].width;
+      else if (dim === 'height') height = picture.results[0].height;     
+      else console.log('didnt find the property');
+    
+  };
+  // everytime the "svelte-variable" changes the hd is also upadted
+  $: {
+    setHDValue(HDw, width)
+  }
+  $: {
+    setHDValue(HDh, height)
+  }
+  $: {
+    setHDValue(HDd, depth)
+  }
 </script>
 
 <main>
@@ -67,25 +101,24 @@
   <p>
     Width: <input
       bind:value={width}
-      on:change={() => setHDValue(HDw, width)}
       type="number"
       id="width"
       placeholder="width"
-    />
+    /> <input bind:value={serachWidth} type="text" placeholder="bookshelf" />
+    <button on:click={() => fetchPicture(serachWidth, "width")} type="submit">Search</button>
   </p>
   <p>
     Height: <input
       bind:value={height}
-      on:change={() => setHDValue(HDh, height)}
       type="number"
       id="height"
       placeholder="height"
-    />
+    /> <input bind:value={searchHeight} type="text" placeholder="table" />
+    <button on:click={() => fetchPicture(searchHeight, "height")} type="submit">Search</button>
   </p>
   <p>
     Depth: <input
       bind:value={depth}
-      on:change={() => setHDValue(HDd, depth)}
       type="number"
       id="depth"
       placeholder="depth"

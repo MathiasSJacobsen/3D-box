@@ -105,7 +105,7 @@
       id="width"
       placeholder="width"
     /> <input bind:value={serachWidth} type="text" placeholder="bookshelf" />
-    <button on:click={() => fetchPicture(serachWidth, "width")} type="submit">Search</button>
+    <button on:click={() => fetchPicture(serachWidth, "width")} type="submit">Get from REST API</button>
   </p>
   <p>
     Height: <input
@@ -114,7 +114,7 @@
       id="height"
       placeholder="height"
     /> <input bind:value={searchHeight} type="text" placeholder="table" />
-    <button on:click={() => fetchPicture(searchHeight, "height")} type="submit">Search</button>
+    <button on:click={() => fetchPicture(searchHeight, "height")} type="submit">Get from REST API</button>
   </p>
   <p>
     Depth: <input

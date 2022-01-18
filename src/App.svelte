@@ -6,10 +6,10 @@
   let system = new hd.ConstraintSystem();
 
   let comp = hd.component`
-    var w = 1, d=1, h=1, a;
+    var w = 1, d=1, h=1, v;
     
     constraint {
-      (w, d, h -> a) => w*d*h;
+      (w, d, h -> v) => w*d*h;
     }	
   `;
 
@@ -22,26 +22,26 @@
   comp.vs.h.value.subscribeValue((v: number) =>
     console.log("HD: Value of height: " + v)
   );
-  comp.vs.a.value.subscribeValue((v: number) =>
+  comp.vs.v.value.subscribeValue((v: number) =>
     console.log("HD: Value of volum: " + v)
   );
 
   system.addComponent(comp);
   system.update();
 
-  let a: HDValue<number> = comp.vs.a.value;
-  let w: HDValue<number> = comp.vs.w.value;
+  let HDv: HDValue<number> = comp.vs.v.value;
+  let HDw: HDValue<number> = comp.vs.w.value;
   let width: number = 1;
-  let d: HDValue<number> = comp.vs.d.value;
+  let HDd: HDValue<number> = comp.vs.d.value;
   let depth: number = 1;
-  let h: HDValue<number> = comp.vs.h.value;
+  let HDh: HDValue<number> = comp.vs.h.value;
   let height: number = 1;
 
   onMount(() => {
-    a.subscribe({
+    HDv.subscribe({
       next: (val: any) => {
         if (val.hasOwnProperty("value")) {
-          a = val.value;
+          HDv = val.value;
         }
       },
     });
@@ -59,7 +59,7 @@
   <p>
     Width: <input
       bind:value={width}
-      on:change={() => setHDValue(w, width)}
+      on:change={() => setHDValue(HDw, width)}
       type="number"
       id="width"
       placeholder="width"
@@ -68,7 +68,7 @@
   <p>
     Height: <input
       bind:value={height}
-      on:change={() => setHDValue(h, height)}
+      on:change={() => setHDValue(HDh, height)}
       type="number"
       id="height"
       placeholder="height"
@@ -77,14 +77,14 @@
   <p>
     Depth: <input
       bind:value={depth}
-      on:change={() => setHDValue(d, depth)}
+      on:change={() => setHDValue(HDd, depth)}
       type="number"
       id="depth"
       placeholder="depth"
     />
   </p>
   <p>
-    Volum: {a}
+    Volum: {HDv}
   </p>
 </main>
 

@@ -31,6 +31,20 @@
   system.addComponent(comp);
   system.update();
 
+  onMount(() => {
+    HDv.subscribe({
+      next: (val: any) => {
+        if (val.hasOwnProperty("value")) {
+          HDv = val.value;
+        }
+      },
+    });
+  });
+
+  function setHDValue(HDValue: HDValue<number>, n: number) {
+    HDValue.set(n);
+  }
+  
   let HDv: HDValue<number> = comp.vs.v.value;
   let HDw: HDValue<number> = comp.vs.w.value;
   let width: number = 1;
@@ -47,19 +61,6 @@
     console.log("---------------------");
   }
 
-  onMount(() => {
-    HDv.subscribe({
-      next: (val: any) => {
-        if (val.hasOwnProperty("value")) {
-          HDv = val.value;
-        }
-      },
-    });
-  });
-
-  function setHDValue(HDValue: HDValue<number>, n: number) {
-    HDValue.set(n);
-  }
 
   let serachWidth = "";
   let searchHeight = "";

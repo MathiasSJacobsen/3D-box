@@ -12,7 +12,7 @@ import { writable } from "svelte/store";
 export const disabledButtonIfBothFromAPI = createDisableIfBothFromAPIStore()
 
 function createBothFromAPIStore() {
-	const { subscribe, set, update } = writable(false);
+	const { subscribe, set, update } = writable(true);
 
     return {
         subscribe,

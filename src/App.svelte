@@ -2,7 +2,6 @@
   import { onMount } from "svelte";
   import Dimension from "./components/Dimension.svelte";
   import hd from "./hotdrink/hotdrink";
-  import type HDValue from "./hotdrink/hotdrink.js";
   import { depthS } from "./stores/depthStores";
   import {
     bothFromAPI,
@@ -10,9 +9,10 @@
   } from "./stores/disablingStores";
   import { heightS, searchHeightS } from "./stores/heightStores";
   import { widthS, searchWidth } from "./stores/widthStores";
+  import { fetchPicture } from "./api/unsplash";
+  import type HDValue from "./hotdrink/hotdrink.js";
   import type { Searchdims } from "./types/SearchDim";
   import type { UnsplashSearchResponseType } from "./types/UnsplashTypes";
-  import { fetchPicture } from "./api/unsplash";
 
   const mssg = process.env.isProd
     ? "This is production mode"
@@ -30,12 +30,12 @@
   `;
 
   let disable = hd.component`
-    var l = false, m;
-    constraint {
-        test(l -> m) => !l;
+    var isDisabledIfBothFromAPI=false, bothFromAPI;
+    constraint disable{
+        combine1(isDisabledIfBothFromAPI -> bothFromAPI) => !isDisabledIfBothFromAPI;
       }
   `;
-
+  
   comp.vs.w.value.subscribeValue((n: number) =>
     console.log("HD: Value of width: " + n)
   );
@@ -49,8 +49,11 @@
     console.log("HD: Value of volum: " + n)
   );
 
-  disable.vs.l.value.subscribeValue((v: boolean) =>
-    console.log("HD: Value of l: " + v)
+  disable.vs.isDisabledIfBothFromAPI.value.subscribeValue((v: boolean) =>
+    console.log("HD: Value of isDisabledIfBothFromAPI: " + v)
+  );
+  disable.vs.bothFromAPI.value.subscribeValue((v: boolean) =>
+    console.log("HD: Value of bothFromAPI: " + v)
   );
 
   system.addComponent(comp);
@@ -75,11 +78,16 @@
   let HDd: HDValue<number> = comp.vs.d.value;
   let HDh: HDValue<number> = comp.vs.h.value;
 
+  let isDisabledIfBothFromAPI = disable.vs.isDisabledIfBothFromAPI.value;
+  let HDbothFromAPI = disable.vs.bothFromAPI.value;
+
   $: {
     console.log("---------------------");
     console.log(`Value of width: ${$widthS}`);
     console.log(`Value of height: ${$heightS}`);
     console.log(`Value of depth: ${$depthS}`);
+    console.log(`Value of bothFromAPI: ${$bothFromAPI}`);
+    console.log(`Value of isDisabledIfBothFromAPI: ${$disabledButtonIfBothFromAPI}`);
     console.log("---------------------");
   }
 
@@ -110,6 +118,12 @@
   $: {
     bindHDValue(HDd, $depthS);
   }
+  $: {
+    bindHDValue(HDbothFromAPI, $bothFromAPI)
+  }
+  $: {
+    bindHDValue(isDisabledIfBothFromAPI, $disabledButtonIfBothFromAPI)
+  }
 </script>
 
 <main>
@@ -119,14 +133,14 @@
       bind:value={searchBoth}
       type="text"
       placeholder="alves"
-      disabled={$bothFromAPI ? false : true}
+      disabled={$bothFromAPI}
     />
     <input type="checkbox" class="larger" on:change={bothFromAPI.change} /> Get both
     values from REST API
   </p>
   <p>
     <button
-      disabled={$bothFromAPI ? false : true}
+      disabled={$bothFromAPI}
       on:click={() =>
         fetchPicture(searchBoth).then((res) => assignAPIValues(res, "both"))}
       >BOTH</button

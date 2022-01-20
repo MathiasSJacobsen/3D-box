@@ -1,9 +1,13 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import Dimension from "./components/Dimension.svelte";
   import hd from "./hotdrink/hotdrink";
   import type HDValue from "./hotdrink/hotdrink.js";
-import { bothFromAPI, disabledButtonIfBothFromAPI } from "./stores/disablingStores";
-import { heightS, searchHeightS } from "./stores/heightStores";
+  import {
+    bothFromAPI,
+    disabledButtonIfBothFromAPI,
+  } from "./stores/disablingStores";
+  import { heightS, searchHeightS } from "./stores/heightStores";
   import type { Searchdims } from "./types/SearchDim";
   import type { UnsplashSearchResponseType } from "./types/UnsplashTypes";
 
@@ -22,7 +26,7 @@ import { heightS, searchHeightS } from "./stores/heightStores";
     constraint {
         test(l -> m) => !l;
       }
-  `
+  `;
 
   comp.vs.w.value.subscribeValue((n: number) =>
     console.log("HD: Value of width: " + n)
@@ -74,7 +78,6 @@ import { heightS, searchHeightS } from "./stores/heightStores";
     console.log("---------------------");
   }
 
-
   let serachWidth = "";
   // let searchHeight = "";
   let searchBoth = "";
@@ -87,15 +90,15 @@ import { heightS, searchHeightS } from "./stores/heightStores";
     myHeaders.append(
       "Authorization",
       "Client-ID Hv5JD1AXGRtPaHVXhRCYej93Qu5Oxwa5Mioxe4d0Yt8"
-      );
-      
-      var requestOptions = {
-        method: "GET",
-        headers: myHeaders,
-      };
+    );
 
-      console.log("Sending request");
-      
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+    };
+
+    console.log("Sending request");
+
     const response = await fetch(
       `https://api.unsplash.com/search/photos?page=${page}&query=${searchWord}&per_page=${per_page}`,
       requestOptions
@@ -104,14 +107,15 @@ import { heightS, searchHeightS } from "./stores/heightStores";
 
     if (JSONresponse.results.length === 0) {
       console.log("No picture fund!");
-      return
+      return;
     }
 
     if (dim === "width") width = JSONresponse.results[0].width;
-    else if (dim === "height") heightS.set(JSONresponse.results[0].height) // height = picture.results[0].height;
+    else if (dim === "height") heightS.set(JSONresponse.results[0].height);
+    // height = picture.results[0].height;
     else if (dim === "both") {
       width = JSONresponse.results[0].width;
-      heightS.set(JSONresponse.results[0].height) // height = picture.results[0].height;
+      heightS.set(JSONresponse.results[0].height); // height = picture.results[0].height;
       likes = JSONresponse.results[0].likes;
     } else console.log("didnt find the property");
   };
@@ -126,7 +130,6 @@ import { heightS, searchHeightS } from "./stores/heightStores";
   $: {
     bindHDValue(HDd, depth);
   }
-
 </script>
 
 <main>
@@ -136,14 +139,14 @@ import { heightS, searchHeightS } from "./stores/heightStores";
       bind:value={searchBoth}
       type="text"
       placeholder="alves"
-      disabled={$bothFromAPI ? false: true }
+      disabled={$bothFromAPI ? false : true}
     />
     <input type="checkbox" class="larger" on:change={bothFromAPI.change} /> Get both
     values from REST API
   </p>
   <p>
     <button
-    disabled={$bothFromAPI ? false: true }
+      disabled={$bothFromAPI ? false : true}
       on:click={() => fetchPicture(searchBoth, "both")}>BOTH</button
     >
   </p>
@@ -192,7 +195,7 @@ import { heightS, searchHeightS } from "./stores/heightStores";
       id="depth"
       placeholder="depth"
     />
-    
+
     <button
       on:click={() => {
         depth = likes;
@@ -204,6 +207,12 @@ import { heightS, searchHeightS } from "./stores/heightStores";
   <p>
     Volum: {HDv}
   </p>
+
+  <!--
+  <Dimension 
+  dimension="Height"
+  {fetchPicture}/>
+-->
 </main>
 
 <style>

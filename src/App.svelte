@@ -3,7 +3,7 @@
   import Dimension from "./components/Dimension.svelte";
   import hd from "./hotdrink/hotdrink";
   import type HDValue from "./hotdrink/hotdrink.js";
-import { depthS } from "./stores/depthStores";
+  import { depthS } from "./stores/depthStores";
   import {
     bothFromAPI,
     disabledButtonIfBothFromAPI,
@@ -12,12 +12,15 @@ import { depthS } from "./stores/depthStores";
   import { widthS, searchWidth } from "./stores/widthStores";
   import type { Searchdims } from "./types/SearchDim";
   import type { UnsplashSearchResponseType } from "./types/UnsplashTypes";
-  
-  const mssg = process.env.isProd ? 'This is production mode' : 'This is dev mode';
+  import { fetchPicture } from "./api/unsplash";
+
+  const mssg = process.env.isProd
+    ? "This is production mode"
+    : "This is dev mode";
   console.log(mssg);
 
   let system = new hd.ConstraintSystem();
-  
+
   let comp = hd.component`
     var w = 1, d=1, h=1, v;
     
@@ -62,8 +65,6 @@ import { depthS } from "./stores/depthStores";
       },
     });
   });
-  
-  
 
   function bindHDValue<T>(HDValue: HDValue<T>, n: T) {
     HDValue.set(n);
@@ -85,34 +86,11 @@ import { depthS } from "./stores/depthStores";
   let searchBoth = "";
   let likes = 0;
 
-  
-  const fetchPicture = async (searchWord: string, dim: Searchdims) => {
-    const per_page = 1;
-    const page = 1;
-    var myHeaders = new Headers();
-    myHeaders.append(
-      "Authorization",
-      `Client-ID ${process.env.UNSPLASH_API_KEY}`
-    );
-
-    var requestOptions = {
-      method: "GET",
-      headers: myHeaders,
-    };
-
-    console.log("Sending request");
-
-    const response = await fetch(
-      `https://api.unsplash.com/search/photos?page=${page}&query=${searchWord}&per_page=${per_page}`,
-      requestOptions
-    );
-    const JSONresponse: UnsplashSearchResponseType = await response.json();
-
-    if (JSONresponse.results.length === 0) {
-      console.log("No picture fund!");
-      return;
-    }
-
+  function assignAPIValues(
+    JSONresponse: UnsplashSearchResponseType | undefined,
+    dim: Searchdims
+  ) {
+    if (!JSONresponse) return;
     if (dim === "width") widthS.set(JSONresponse.results[0].width);
     else if (dim === "height") heightS.set(JSONresponse.results[0].height);
     else if (dim === "both") {
@@ -120,7 +98,7 @@ import { depthS } from "./stores/depthStores";
       heightS.set(JSONresponse.results[0].height);
       likes = JSONresponse.results[0].likes;
     } else console.log("didnt find the property");
-  };
+  }
 
   // everytime the "svelte-variable" changes the hd is also upadted
   $: {
@@ -149,7 +127,9 @@ import { depthS } from "./stores/depthStores";
   <p>
     <button
       disabled={$bothFromAPI ? false : true}
-      on:click={() => fetchPicture(searchBoth, "both")}>BOTH</button
+      on:click={() =>
+        fetchPicture(searchBoth).then((res) => assignAPIValues(res, "both"))}
+      >BOTH</button
     >
   </p>
   <p>
@@ -166,7 +146,8 @@ import { depthS } from "./stores/depthStores";
       disabled={$disabledButtonIfBothFromAPI}
     />
     <button
-      on:click={() => fetchPicture($searchWidth, "width")}
+      on:click={() =>
+        fetchPicture($searchWidth).then((res) => assignAPIValues(res, "width"))}
       type="submit"
       disabled={$disabledButtonIfBothFromAPI}>Get from REST API</button
     >
@@ -185,7 +166,10 @@ import { depthS } from "./stores/depthStores";
       disabled={$disabledButtonIfBothFromAPI}
     />
     <button
-      on:click={() => fetchPicture($searchHeightS, "height")}
+      on:click={() =>
+        fetchPicture($searchHeightS).then((res) =>
+          assignAPIValues(res, "height")
+        )}
       type="submit"
       disabled={$disabledButtonIfBothFromAPI}>Get from REST API</button
     >

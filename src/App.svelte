@@ -3,6 +3,7 @@
   import Dimension from "./components/Dimension.svelte";
   import hd from "./hotdrink/hotdrink";
   import type HDValue from "./hotdrink/hotdrink.js";
+import { depthS } from "./stores/depthStores";
   import {
     bothFromAPI,
     disabledButtonIfBothFromAPI,
@@ -66,14 +67,13 @@
   let HDv: HDValue<number> = comp.vs.v.value;
   let HDw: HDValue<number> = comp.vs.w.value;
   let HDd: HDValue<number> = comp.vs.d.value;
-  let depth: number = 1;
   let HDh: HDValue<number> = comp.vs.h.value;
 
   $: {
     console.log("---------------------");
     console.log(`Value of width: ${$widthS}`);
     console.log(`Value of height: ${$heightS}`);
-    console.log(`Value of depth: ${depth}`);
+    console.log(`Value of depth: ${$depthS}`);
     console.log("---------------------");
   }
 
@@ -124,7 +124,7 @@
     bindHDValue(HDh, $heightS);
   }
   $: {
-    bindHDValue(HDd, depth);
+    bindHDValue(HDd, $depthS);
   }
 </script>
 
@@ -186,7 +186,7 @@
   </p>
   <p>
     Depth: <input
-      bind:value={depth}
+      bind:value={$depthS}
       type="number"
       id="depth"
       placeholder="depth"
@@ -194,7 +194,7 @@
 
     <button
       on:click={() => {
-        depth = likes;
+        depthS.set(likes);
       }}
       type="submit"
       disabled={!bothFromAPI}>Get from likes</button

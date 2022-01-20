@@ -17,17 +17,28 @@ import { heightS, searchHeightS } from "./stores/heightStores";
     }	
   `;
 
-  comp.vs.w.value.subscribeValue((v: number) =>
-    console.log("HD: Value of width: " + v)
+  let test = hd.component`
+    var l = false, m;
+    constraint {
+        test(l -> m) => !l;
+      }
+  `
+
+  comp.vs.w.value.subscribeValue((n: number) =>
+    console.log("HD: Value of width: " + n)
   );
-  comp.vs.d.value.subscribeValue((v: number) =>
-    console.log("HD: Value of depth: " + v)
+  comp.vs.d.value.subscribeValue((n: number) =>
+    console.log("HD: Value of depth: " + n)
   );
-  comp.vs.h.value.subscribeValue((v: number) =>
-    console.log("HD: Value of height: " + v)
+  comp.vs.h.value.subscribeValue((n: number) =>
+    console.log("HD: Value of height: " + n)
   );
-  comp.vs.v.value.subscribeValue((v: number) =>
-    console.log("HD: Value of volum: " + v)
+  comp.vs.v.value.subscribeValue((n: number) =>
+    console.log("HD: Value of volum: " + n)
+  );
+
+  test.vs.l.value.subscribeValue((v: boolean) =>
+    console.log("HD: Value of l: " + v)
   );
 
   system.addComponent(comp);
@@ -43,76 +54,79 @@ import { heightS, searchHeightS } from "./stores/heightStores";
     });
   });
 
-  function setHDValue(HDValue: HDValue<number>, n: number) {
+  function bindHDValue<T>(HDValue: HDValue<T>, n: T) {
     HDValue.set(n);
   }
-  
+
   let HDv: HDValue<number> = comp.vs.v.value;
   let HDw: HDValue<number> = comp.vs.w.value;
   let width: number = 1;
   let HDd: HDValue<number> = comp.vs.d.value;
   let depth: number = 1;
   let HDh: HDValue<number> = comp.vs.h.value;
-  let height: number = 1;
+  //let height: number = 1;
 
   $: {
     console.log("---------------------");
     console.log(`Value of width: ${width}`);
-    console.log(`Value of height: ${height}`);
+    console.log(`Value of height: ${$heightS}`);
     console.log(`Value of depth: ${depth}`);
     console.log("---------------------");
   }
 
 
   let serachWidth = "";
-  let searchHeight = "";
+  // let searchHeight = "";
   let searchBoth = "";
   let likes = 0;
 
   const fetchPicture = async (searchWord: string, dim: Searchdims) => {
+    const per_page = 1;
+    const page = 1;
     var myHeaders = new Headers();
     myHeaders.append(
       "Authorization",
+      "Client-ID Hv5JD1AXGRtPaHVXhRCYej93Qu5Oxwa5Mioxe4d0Yt8"
+      );
       
-    );
+      var requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+      };
 
-    var requestOptions = {
-      method: "GET",
-      headers: myHeaders,
-    };
-    const per_page = 1;
-    const page = 1;
+      console.log("Sending request");
+      
     const response = await fetch(
       `https://api.unsplash.com/search/photos?page=${page}&query=${searchWord}&per_page=${per_page}`,
       requestOptions
     );
-    const picture: UnsplashSearchResponseType = await response.json();
+    const JSONresponse: UnsplashSearchResponseType = await response.json();
 
-    if (dim === "width") width = picture.results[0].width;
-    else if (dim === "height") height = picture.results[0].height;
+    if (JSONresponse.results.length === 0) {
+      console.log("No picture fund!");
+      return
+    }
+
+    if (dim === "width") width = JSONresponse.results[0].width;
+    else if (dim === "height") heightS.set(JSONresponse.results[0].height) // height = picture.results[0].height;
     else if (dim === "both") {
-      width = picture.results[0].width;
-      height = picture.results[0].height;
-      likes = picture.results[0].likes;
+      width = JSONresponse.results[0].width;
+      heightS.set(JSONresponse.results[0].height) // height = picture.results[0].height;
+      likes = JSONresponse.results[0].likes;
     } else console.log("didnt find the property");
   };
+
   // everytime the "svelte-variable" changes the hd is also upadted
   $: {
-    setHDValue(HDw, width);
+    bindHDValue(HDw, width);
   }
   $: {
-    setHDValue(HDh, height);
+    bindHDValue(HDh, $heightS);
   }
   $: {
-    setHDValue(HDd, depth);
+    bindHDValue(HDd, depth);
   }
 
-  let bothFromAPI = false;
-  $: disabledButtonIfBothFromAPI = bothFromAPI ? true : false;
-
-  const disableButtons = () => {
-    bothFromAPI = !bothFromAPI;
-  };
 </script>
 
 <main>
@@ -178,6 +192,7 @@ import { heightS, searchHeightS } from "./stores/heightStores";
       id="depth"
       placeholder="depth"
     />
+    
     <button
       on:click={() => {
         depth = likes;

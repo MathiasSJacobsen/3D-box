@@ -2,6 +2,8 @@
   import { onMount } from "svelte";
   import hd from "./hotdrink/hotdrink";
   import type HDValue from "./hotdrink/hotdrink.js";
+import { bothFromAPI, disabledButtonIfBothFromAPI } from "./stores/disablingStores";
+import { heightS, searchHeightS } from "./stores/heightStores";
   import type { Searchdims } from "./types/SearchDim";
   import type { UnsplashSearchResponseType } from "./types/UnsplashTypes";
 
@@ -120,14 +122,14 @@
       bind:value={searchBoth}
       type="text"
       placeholder="alves"
-      disabled={!bothFromAPI}
+      disabled={$bothFromAPI ? false: true }
     />
-    <input type="checkbox" class="larger" on:change={disableButtons} /> Get both
+    <input type="checkbox" class="larger" on:change={bothFromAPI.change} /> Get both
     values from REST API
   </p>
   <p>
     <button
-      disabled={!bothFromAPI}
+    disabled={$bothFromAPI ? false: true }
       on:click={() => fetchPicture(searchBoth, "both")}>BOTH</button
     >
   </p>
@@ -142,31 +144,31 @@
       bind:value={serachWidth}
       type="text"
       placeholder="bookshelf"
-      disabled={disabledButtonIfBothFromAPI}
+      disabled={$disabledButtonIfBothFromAPI}
     />
     <button
       on:click={() => fetchPicture(serachWidth, "width")}
       type="submit"
-      disabled={disabledButtonIfBothFromAPI}>Get from REST API</button
+      disabled={$disabledButtonIfBothFromAPI}>Get from REST API</button
     >
   </p>
   <p>
     Height: <input
-      bind:value={height}
+      bind:value={$heightS}
       type="number"
       id="height"
       placeholder="height"
     />
     <input
-      bind:value={searchHeight}
+      bind:value={$searchHeightS}
       type="text"
       placeholder="table"
-      disabled={disabledButtonIfBothFromAPI}
+      disabled={$disabledButtonIfBothFromAPI}
     />
     <button
-      on:click={() => fetchPicture(searchHeight, "height")}
+      on:click={() => fetchPicture($searchHeightS, "height")}
       type="submit"
-      disabled={disabledButtonIfBothFromAPI}>Get from REST API</button
+      disabled={$disabledButtonIfBothFromAPI}>Get from REST API</button
     >
   </p>
   <p>

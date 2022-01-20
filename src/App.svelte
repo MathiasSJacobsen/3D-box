@@ -12,13 +12,16 @@ import { depthS } from "./stores/depthStores";
   import { widthS, searchWidth } from "./stores/widthStores";
   import type { Searchdims } from "./types/SearchDim";
   import type { UnsplashSearchResponseType } from "./types/UnsplashTypes";
+  
+  const mssg = process.env.isProd ? 'This is production mode' : 'This is dev mode';
+  console.log(mssg);
 
   let system = new hd.ConstraintSystem();
-
+  
   let comp = hd.component`
     var w = 1, d=1, h=1, v;
     
-    constraint {
+    constraint b {
       calculateVolum(w, d, h -> v) => w*d*h;
     }	
   `;
@@ -59,6 +62,8 @@ import { depthS } from "./stores/depthStores";
       },
     });
   });
+  
+  
 
   function bindHDValue<T>(HDValue: HDValue<T>, n: T) {
     HDValue.set(n);
@@ -80,13 +85,14 @@ import { depthS } from "./stores/depthStores";
   let searchBoth = "";
   let likes = 0;
 
+  
   const fetchPicture = async (searchWord: string, dim: Searchdims) => {
     const per_page = 1;
     const page = 1;
     var myHeaders = new Headers();
     myHeaders.append(
       "Authorization",
-      "Client-ID Hv5JD1AXGRtPaHVXhRCYej93Qu5Oxwa5Mioxe4d0Yt8"
+      `Client-ID ${process.env.UNSPLASH_API_KEY}`
     );
 
     var requestOptions = {

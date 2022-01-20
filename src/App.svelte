@@ -8,6 +8,7 @@
     disabledButtonIfBothFromAPI,
   } from "./stores/disablingStores";
   import { heightS, searchHeightS } from "./stores/heightStores";
+  import { widthS, searchWidth } from "./stores/widthStores";
   import type { Searchdims } from "./types/SearchDim";
   import type { UnsplashSearchResponseType } from "./types/UnsplashTypes";
 
@@ -21,7 +22,7 @@
     }	
   `;
 
-  let test = hd.component`
+  let disable = hd.component`
     var l = false, m;
     constraint {
         test(l -> m) => !l;
@@ -41,7 +42,7 @@
     console.log("HD: Value of volum: " + n)
   );
 
-  test.vs.l.value.subscribeValue((v: boolean) =>
+  disable.vs.l.value.subscribeValue((v: boolean) =>
     console.log("HD: Value of l: " + v)
   );
 
@@ -64,22 +65,18 @@
 
   let HDv: HDValue<number> = comp.vs.v.value;
   let HDw: HDValue<number> = comp.vs.w.value;
-  let width: number = 1;
   let HDd: HDValue<number> = comp.vs.d.value;
   let depth: number = 1;
   let HDh: HDValue<number> = comp.vs.h.value;
-  //let height: number = 1;
 
   $: {
     console.log("---------------------");
-    console.log(`Value of width: ${width}`);
+    console.log(`Value of width: ${$widthS}`);
     console.log(`Value of height: ${$heightS}`);
     console.log(`Value of depth: ${depth}`);
     console.log("---------------------");
   }
 
-  let serachWidth = "";
-  // let searchHeight = "";
   let searchBoth = "";
   let likes = 0;
 
@@ -110,19 +107,18 @@
       return;
     }
 
-    if (dim === "width") width = JSONresponse.results[0].width;
+    if (dim === "width") widthS.set(JSONresponse.results[0].width);
     else if (dim === "height") heightS.set(JSONresponse.results[0].height);
-    // height = picture.results[0].height;
     else if (dim === "both") {
-      width = JSONresponse.results[0].width;
-      heightS.set(JSONresponse.results[0].height); // height = picture.results[0].height;
+      widthS.set(JSONresponse.results[0].width);
+      heightS.set(JSONresponse.results[0].height);
       likes = JSONresponse.results[0].likes;
     } else console.log("didnt find the property");
   };
 
   // everytime the "svelte-variable" changes the hd is also upadted
   $: {
-    bindHDValue(HDw, width);
+    bindHDValue(HDw, $widthS);
   }
   $: {
     bindHDValue(HDh, $heightS);
@@ -152,19 +148,19 @@
   </p>
   <p>
     Width: <input
-      bind:value={width}
+      bind:value={$widthS}
       type="number"
       id="width"
       placeholder="width"
     />
     <input
-      bind:value={serachWidth}
+      bind:value={$searchWidth}
       type="text"
       placeholder="bookshelf"
       disabled={$disabledButtonIfBothFromAPI}
     />
     <button
-      on:click={() => fetchPicture(serachWidth, "width")}
+      on:click={() => fetchPicture($searchWidth, "width")}
       type="submit"
       disabled={$disabledButtonIfBothFromAPI}>Get from REST API</button
     >

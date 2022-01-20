@@ -86,10 +86,10 @@
   let searchBoth = "";
   let likes = 0;
 
-  function assignAPIValues(
+  const assignAPIValues = (
     JSONresponse: UnsplashSearchResponseType | undefined,
     dim: Searchdims
-  ) {
+  ) => {
     if (!JSONresponse) return;
     if (dim === "width") widthS.set(JSONresponse.results[0].width);
     else if (dim === "height") heightS.set(JSONresponse.results[0].height);

@@ -13,7 +13,7 @@ import { heightS, searchHeightS } from "./stores/heightStores";
     var w = 1, d=1, h=1, v;
     
     constraint {
-      (w, d, h -> v) => w*d*h;
+      calculateVolum(w, d, h -> v) => w*d*h;
     }	
   `;
 

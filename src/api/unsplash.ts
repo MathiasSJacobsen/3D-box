@@ -1,7 +1,6 @@
-import type { Searchdims } from "../types/SearchDim";
 import type { UnsplashSearchResponseType } from "../types/UnsplashTypes";
 
-export const fetchPicture = async (searchWord: string): Promise<UnsplashSearchResponseType> | undefined => {
+export const fetchPicture = async (searchWord: string): Promise<UnsplashSearchResponseType>  => {
     const per_page = 1;
     const page = 1;
     var myHeaders = new Headers();
@@ -24,8 +23,7 @@ export const fetchPicture = async (searchWord: string): Promise<UnsplashSearchRe
     const JSONresponse: UnsplashSearchResponseType = await response.json();
 
     if (JSONresponse.results.length === 0) {
-      console.log("No picture fund!");
-      return;
+      throw "No picture fund!"
     }
     return JSONresponse
 }

@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import Dimension from "./components/Dimension.svelte";
   import hd from "./hotdrink/hotdrink";
   import { depthS } from "./stores/depthStores";
   import {
@@ -13,7 +12,7 @@
   import type HDValue from "./hotdrink/hotdrink.js";
   import type { Searchdims } from "./types/SearchDim";
   import type { UnsplashSearchResponseType } from "./types/UnsplashTypes";
-import MetricColumn from "./components/MetricColumn.svelte";
+  import MetricColumn from "./components/MetricColumn.svelte";
 
   const mssg = process.env.isProd
     ? "This is production mode"
@@ -36,7 +35,7 @@ import MetricColumn from "./components/MetricColumn.svelte";
         combine1(isDisabledIfBothFromAPI -> bothFromAPI) => !isDisabledIfBothFromAPI;
       }
   `;
-  
+
   comp.vs.w.value.subscribeValue((n: number) =>
     console.log("HD: Value of width: " + n)
   );
@@ -88,7 +87,9 @@ import MetricColumn from "./components/MetricColumn.svelte";
     console.log(`Value of height: ${$heightS}`);
     console.log(`Value of depth: ${$depthS}`);
     console.log(`Value of bothFromAPI: ${$bothFromAPI}`);
-    console.log(`Value of isDisabledIfBothFromAPI: ${$disabledButtonIfBothFromAPI}`);
+    console.log(
+      `Value of isDisabledIfBothFromAPI: ${$disabledButtonIfBothFromAPI}`
+    );
     console.log("---------------------");
   }
 
@@ -107,7 +108,7 @@ import MetricColumn from "./components/MetricColumn.svelte";
       heightS.set(JSONresponse.results[0].height);
       likes = JSONresponse.results[0].likes;
     } else console.log("Didnt find the property");
-  }
+  };
 
   // everytime the "svelte-variable" changes the hd is also upadted
   $: {
@@ -120,112 +121,110 @@ import MetricColumn from "./components/MetricColumn.svelte";
     bindHDValue(HDd, $depthS);
   }
   $: {
-    bindHDValue(HDbothFromAPI, $bothFromAPI)
+    bindHDValue(HDbothFromAPI, $bothFromAPI);
   }
   $: {
-    bindHDValue(isDisabledIfBothFromAPI, $disabledButtonIfBothFromAPI)
+    bindHDValue(isDisabledIfBothFromAPI, $disabledButtonIfBothFromAPI);
   }
 </script>
 
 <main>
   <h1>3D-Box</h1>
   <div>
-
     <p>
       <input
-      bind:value={searchBoth}
-      type="text"
-      placeholder="alves"
-      disabled={$bothFromAPI}
+        bind:value={searchBoth}
+        type="text"
+        placeholder="alves"
+        disabled={$bothFromAPI}
       />
-      <input type="checkbox" class="larger" on:change={bothFromAPI.change} /> Get both
-      values from REST API
+      <input type="checkbox" class="larger" on:change={bothFromAPI.change} /> Get
+      both values from REST API
     </p>
     <p>
       <button
-      disabled={$bothFromAPI}
-      on:click={() =>
-        fetchPicture(searchBoth).then((res) => assignAPIValues(res, "both"))}
-      >BOTH</button
+        disabled={$bothFromAPI}
+        on:click={() =>
+          fetchPicture(searchBoth).then((res) => assignAPIValues(res, "both"))}
+        >BOTH</button
       >
     </p>
     <MetricColumn>
       <span slot="metric">Width: </span>
       <input
-      slot="metric-input"
-      bind:value={$widthS}
-      type="number"
-      id="width"
-      placeholder="width"
+        slot="metric-input"
+        bind:value={$widthS}
+        type="number"
+        id="width"
+        placeholder="width"
       />
       <input
-      slot="api-search"
-      bind:value={$searchWidth}
-      type="text"
-      placeholder="bookshelf"
-      disabled={$disabledButtonIfBothFromAPI}
+        slot="api-search"
+        bind:value={$searchWidth}
+        type="text"
+        placeholder="bookshelf"
+        disabled={$disabledButtonIfBothFromAPI}
       />
       <button
-      slot="api-button"
-      on:click={() =>
-        fetchPicture($searchWidth).then((res) => assignAPIValues(res, "width"))}
-      type="submit"
-      disabled={$disabledButtonIfBothFromAPI}>Get from REST API</button
+        slot="api-button"
+        on:click={() =>
+          fetchPicture($searchWidth).then((res) =>
+            assignAPIValues(res, "width")
+          )}
+        type="submit"
+        disabled={$disabledButtonIfBothFromAPI}>Get from REST API</button
       >
     </MetricColumn>
     <MetricColumn>
       <span slot="metric">Height:</span>
       <input
-      slot="metric-input"
-      bind:value={$heightS}
-      type="number"
-      id="height"
-      placeholder="height"
+        slot="metric-input"
+        bind:value={$heightS}
+        type="number"
+        id="height"
+        placeholder="height"
       />
       <input
-      slot="api-search"
-      bind:value={$searchHeightS}
-      type="text"
-      placeholder="table"
-      disabled={$disabledButtonIfBothFromAPI}
+        slot="api-search"
+        bind:value={$searchHeightS}
+        type="text"
+        placeholder="table"
+        disabled={$disabledButtonIfBothFromAPI}
       />
       <button
-      slot="api-button"
-      on:click={() => fetchPicture($searchHeightS).then(res => assignAPIValues(res, "height"))}
-      type="submit"
-      disabled={$disabledButtonIfBothFromAPI}>Get from REST API</button
+        slot="api-button"
+        on:click={() =>
+          fetchPicture($searchHeightS).then((res) =>
+            assignAPIValues(res, "height")
+          )}
+        type="submit"
+        disabled={$disabledButtonIfBothFromAPI}>Get from REST API</button
       >
     </MetricColumn>
     <MetricColumn>
       <span slot="metric">Depth:</span>
       <input
-      slot="metric-input"
-      bind:value={$depthS}
-      type="number"
-      id="depth"
-      placeholder="depth"
+        slot="metric-input"
+        bind:value={$depthS}
+        type="number"
+        id="depth"
+        placeholder="depth"
       />
-      
+
       <button
-      slot="api-button"
-      on:click={() => {
-        depthS.set(likes);
-      }}
-      type="submit"
-      disabled={!bothFromAPI}>Get from likes</button
+        slot="api-button"
+        on:click={() => {
+          depthS.set(likes);
+        }}
+        type="submit"
+        disabled={!bothFromAPI}>Get from likes</button
       >
     </MetricColumn>
   </div>
-    <p>
-      Volum: {HDv}
-    </p>
-    
-    <!--
-      <Dimension 
-      dimension="Height"
-      {fetchPicture}/>
-    -->
-  </main>
+  <p>
+    Volum: {HDv}
+  </p>
+</main>
 
 <style>
   main {

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import hd from "./hotdrink/hotdrink";
+  import { defaultConstraintSystem, component } from "./hotdrink/hotdrink";
   import { depthS } from "./stores/depthStores";
   import {
     bothFromAPI,
@@ -19,9 +19,9 @@
     : "This is dev mode";
   console.log(mssg);
 
-  let system = new hd.ConstraintSystem();
+  let system = defaultConstraintSystem;
 
-  let comp = hd.component`
+  let comp = component`
     var w = 1, d=1, h=1, v;
     
     constraint b {
@@ -29,7 +29,7 @@
     }	
   `;
 
-  let disable = hd.component`
+  let disable = component`
     var isDisabledIfBothFromAPI=false, bothFromAPI;
     constraint disable{
         combine1(isDisabledIfBothFromAPI -> bothFromAPI) => !isDisabledIfBothFromAPI;
@@ -57,6 +57,7 @@
   );
 
   system.addComponent(comp);
+  system.addComponent(disable) // Hva gjør denne?
   system.update();
 
   onMount(() => {

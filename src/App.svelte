@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { defaultConstraintSystem, component } from "./hotdrink/hotdrink";
+  import Variable, { defaultConstraintSystem, component } from "./hotdrink/hotdrink";
   import { depthS } from "./stores/depthStores";
   import {
     bothFromAPI,
@@ -9,10 +9,10 @@
   import { heightS, searchHeightS } from "./stores/heightStores";
   import { widthS, searchWidth } from "./stores/widthStores";
   import { fetchPicture } from "./api/unsplash";
-  import type HDValue from "./hotdrink/hotdrink.js";
   import type { Searchdims } from "./types/SearchDim";
   import type { UnsplashSearchResponseType } from "./types/UnsplashTypes";
   import MetricColumn from "./components/MetricColumn.svelte";
+import { log } from "console";
 
   const mssg = process.env.isProd
     ? "This is production mode"
@@ -57,7 +57,7 @@
   );
 
   system.addComponent(comp);
-  system.addComponent(disable) // Hva gjør denne?
+  system.addComponent(disable); // Hva gjør denne?
   system.update();
 
   onMount(() => {
@@ -70,14 +70,14 @@
     });
   });
 
-  function bindHDValue<T>(HDValue: HDValue<T>, n: T) {
-    HDValue.set(n);
+  function bindHDValue<T>(HDvariable: Variable<T>, n: T) {
+    HDvariable.set(n);
   }
 
-  let HDv: HDValue<number> = comp.vs.v.value;
-  let HDw: HDValue<number> = comp.vs.w.value;
-  let HDd: HDValue<number> = comp.vs.d.value;
-  let HDh: HDValue<number> = comp.vs.h.value;
+  let HDv: Variable<number> = comp.vs.v.value;
+  let HDw: Variable<number> = comp.vs.w.value;
+  let HDd: Variable<number> = comp.vs.d.value;
+  let HDh: Variable<number> = comp.vs.h.value;
 
   let isDisabledIfBothFromAPI = disable.vs.isDisabledIfBothFromAPI.value;
   let HDbothFromAPI = disable.vs.bothFromAPI.value;

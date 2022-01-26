@@ -78,7 +78,7 @@
   let HDd: Variable<number> = comp.vs.d.value;
   let HDh: Variable<number> = comp.vs.h.value;
 
-  let isDisabledIfBothFromAPI = disable.vs.isDisabledIfBothFromAPI.value;
+  let HDisDisabledIfBothFromAPI = disable.vs.isDisabledIfBothFromAPI.value;
   let HDbothFromAPI = disable.vs.bothFromAPI.value;
 
   $: {
@@ -124,7 +124,7 @@
     bindHDValue(HDbothFromAPI, $bothFromAPI);
   }
   $: {
-    bindHDValue(isDisabledIfBothFromAPI, $disabledButtonIfBothFromAPI);
+    bindHDValue(HDisDisabledIfBothFromAPI, $disabledButtonIfBothFromAPI);
   }
 </script>
 

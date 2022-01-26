@@ -12,7 +12,6 @@
   import type { Searchdims } from "./types/SearchDim";
   import type { UnsplashSearchResponseType } from "./types/UnsplashTypes";
   import MetricColumn from "./components/MetricColumn.svelte";
-import { log } from "console";
 
   const mssg = process.env.isProd
     ? "This is production mode"

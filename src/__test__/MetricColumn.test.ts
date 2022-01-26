@@ -3,7 +3,7 @@
  */
 
 import "@testing-library/jest-dom";
-import { render, screen, fireEvent } from "@testing-library/svelte";
+import { render, fireEvent } from "@testing-library/svelte";
 import MetricColumnWrapper from "./slotComponentsWorkAround/MetricColumnWrapper.svelte";
 
 describe("Heading", () => {

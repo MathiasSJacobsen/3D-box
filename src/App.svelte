@@ -90,8 +90,8 @@
   let HDd: Variable<number> = comp.vs.d.value;
   let HDh: Variable<number> = comp.vs.h.value;
 
-  let HDisDisabledIfBothFromAPI = comp.vs.isDisabledIfBothFromAPI.value;
-  let HDbothFromAPI = comp.vs.bothFromAPI.value;
+  let HDisDisabledIfBothFromAPI: Variable<boolean> = comp.vs.isDisabledIfBothFromAPI.value;
+  let HDbothFromAPI: Variable<boolean> = comp.vs.bothFromAPI.value;
 
   $: {
     console.log("---------------------");

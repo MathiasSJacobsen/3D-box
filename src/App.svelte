@@ -1,6 +1,9 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import Variable, { defaultConstraintSystem, component } from "./hotdrink/hotdrink";
+  import Variable, {
+    defaultConstraintSystem,
+    component,
+  } from "./hotdrink/hotdrink";
   import { depthS } from "./stores/depthStores";
   import {
     bothFromAPI,
@@ -12,6 +15,7 @@
   import type { Searchdims } from "./types/SearchDim";
   import type { UnsplashSearchResponseType } from "./types/UnsplashTypes";
   import MetricColumn from "./components/MetricColumn.svelte";
+  import { volumS } from "./stores/volumStore";
 
   const mssg = process.env.isProd
     ? "This is production mode"
@@ -21,16 +25,16 @@
   let system = defaultConstraintSystem;
 
   let comp = component`
-    var w = 1, d=1, h=1, v;
+    var w=1, d=1, h=1, v;
     
-    constraint b {
+    constraint volum {
       calculateVolum(w, d, h -> v) => w*d*h;
+      (v, d, w -> h) => v/(d*w);
+      (v, w, h -> d) => v/(w*h);
+      (v, d, h -> w) => v/(d*h);
     }	
-  `;
-
-  let disable = component`
     var isDisabledIfBothFromAPI=false, bothFromAPI;
-    constraint disable{
+    constraint disable {
         combine1(isDisabledIfBothFromAPI -> bothFromAPI) => !isDisabledIfBothFromAPI;
       }
   `;
@@ -48,29 +52,37 @@
     console.log("HD: Value of volum: " + n)
   );
 
-  disable.vs.isDisabledIfBothFromAPI.value.subscribeValue((v: boolean) =>
+  comp.vs.isDisabledIfBothFromAPI.value.subscribeValue((v: boolean) =>
     console.log("HD: Value of isDisabledIfBothFromAPI: " + v)
   );
-  disable.vs.bothFromAPI.value.subscribeValue((v: boolean) =>
+  comp.vs.bothFromAPI.value.subscribeValue((v: boolean) =>
     console.log("HD: Value of bothFromAPI: " + v)
   );
 
   system.addComponent(comp);
-  system.addComponent(disable); // Hva gjør denne?
+  //system.addComponent(disable); // Hva gjør denne?
   system.update();
 
   onMount(() => {
+    // HDv.subscibeValue
+    // error håndtering
     HDv.subscribe({
       next: (val: any) => {
-        if (val.hasOwnProperty("value")) {
-          HDv = val.value;
+        if (val.value) {
+          volumS.set(val.value);
         }
       },
     });
+    HDw.subscribeValue((v: number) => widthS.set(v));
+    HDd.subscribeValue((v: number) => depthS.set(v));
+    HDh.subscribeValue((v: number) => heightS.set(v));
   });
 
-  function bindHDValue<T>(HDvariable: Variable<T>, n: T) {
-    HDvariable.set(n);
+  function setHDValue<T>(HDvariable: Variable<T>, n: T) {
+    // TODO: qickfix so that the variable dosnt update twice with the value set by the first call 
+    if (n !== HDvariable.value) {
+      HDvariable.set(n);
+    }
   }
 
   let HDv: Variable<number> = comp.vs.v.value;
@@ -78,14 +90,15 @@
   let HDd: Variable<number> = comp.vs.d.value;
   let HDh: Variable<number> = comp.vs.h.value;
 
-  let HDisDisabledIfBothFromAPI = disable.vs.isDisabledIfBothFromAPI.value;
-  let HDbothFromAPI = disable.vs.bothFromAPI.value;
+  let HDisDisabledIfBothFromAPI = comp.vs.isDisabledIfBothFromAPI.value;
+  let HDbothFromAPI = comp.vs.bothFromAPI.value;
 
   $: {
     console.log("---------------------");
     console.log(`Value of width: ${$widthS}`);
     console.log(`Value of height: ${$heightS}`);
     console.log(`Value of depth: ${$depthS}`);
+    console.log(`Value of depth: ${$volumS}`);
     console.log(`Value of bothFromAPI: ${$bothFromAPI}`);
     console.log(
       `Value of isDisabledIfBothFromAPI: ${$disabledButtonIfBothFromAPI}`
@@ -94,37 +107,40 @@
   }
 
   let searchBoth = "";
-  let likes = 0;
+  let likes = 0; // TODO: Likes only get set when both values comes from the picture
 
   const assignAPIValues = (
     JSONresponse: UnsplashSearchResponseType | undefined,
     dim: Searchdims
   ) => {
     if (!JSONresponse) return;
-    if (dim === "width") widthS.set(JSONresponse.results[0].width);
-    else if (dim === "height") heightS.set(JSONresponse.results[0].height);
+    if (dim === "width") HDw.set(JSONresponse.results[0].width);
+    else if (dim === "height") HDh.set(JSONresponse.results[0].height);
     else if (dim === "both") {
-      widthS.set(JSONresponse.results[0].width);
-      heightS.set(JSONresponse.results[0].height);
+      HDw.set(JSONresponse.results[0].width);
+      HDh.set(JSONresponse.results[0].height);
       likes = JSONresponse.results[0].likes;
     } else console.log("Didnt find the property");
   };
 
   // everytime the "svelte-variable" changes the hd is also upadted
   $: {
-    bindHDValue(HDw, $widthS);
+    setHDValue(HDw, $widthS);
   }
   $: {
-    bindHDValue(HDh, $heightS);
+    setHDValue(HDh, $heightS);
   }
   $: {
-    bindHDValue(HDd, $depthS);
+    setHDValue(HDd, $depthS);
   }
   $: {
-    bindHDValue(HDbothFromAPI, $bothFromAPI);
+    setHDValue(HDbothFromAPI, $bothFromAPI);
   }
   $: {
-    bindHDValue(HDisDisabledIfBothFromAPI, $disabledButtonIfBothFromAPI);
+    setHDValue(HDisDisabledIfBothFromAPI, $disabledButtonIfBothFromAPI);
+  }
+  $: {
+    setHDValue(HDv, $volumS);
   }
 </script>
 
@@ -222,7 +238,8 @@
     </MetricColumn>
   </div>
   <p>
-    Volum: {HDv}
+    Volum:
+    <input bind:value={$volumS} type="number" />
   </p>
 </main>
 

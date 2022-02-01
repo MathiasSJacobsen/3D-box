@@ -10,7 +10,7 @@
     disabledButtonIfBothFromAPI,
   } from "./stores/disablingStores";
   import { heightS, searchHeightS } from "./stores/heightStores";
-  import { widthS, searchWidth } from "./stores/widthStores";
+  import { widthS, searchWidthS } from "./stores/widthStores";
   import { fetchPicture } from "./api/unsplash";
   import type { Searchdims } from "./types/SearchDim";
   import type { UnsplashSearchResponseType } from "./types/UnsplashTypes";
@@ -176,7 +176,7 @@
       />
       <input
         slot="api-search"
-        bind:value={$searchWidth}
+        bind:value={$searchWidthS}
         type="text"
         placeholder="bookshelf"
         disabled={$disabledButtonIfBothFromAPI}
@@ -184,7 +184,7 @@
       <button
         slot="api-button"
         on:click={() =>
-          fetchPicture($searchWidth).then((res) =>
+          fetchPicture($searchWidthS).then((res) =>
             assignAPIValues(res, "width")
           )}
         type="submit"

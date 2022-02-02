@@ -7,19 +7,21 @@ import { writable } from "svelte/store";
     return {
         subscribe,
         change: () => update(b => !b),
+        set,
     }
 }
 export const disabledButtonIfBothFromAPI = createDisableIfBothFromAPIStore()
 
 function createBothFromAPIStore() {
 	const { subscribe, set, update } = writable(true);
-
+    
     return {
         subscribe,
         change: () => {
             update(b => !b)
             disabledButtonIfBothFromAPI.change()
-        }
+        },
+        set,
     }
 }
 

@@ -16,6 +16,7 @@
   import type { UnsplashSearchResponseType } from "./types/UnsplashTypes";
   import MetricColumn from "./components/MetricColumn.svelte";
   import { volumS } from "./stores/volumStore";
+  import { searchBothS } from "./stores/bothStore";
 
   const mssg = process.env.isProd
     ? "This is production mode"
@@ -35,8 +36,16 @@
     }	
     var isDisabledIfBothFromAPI=false, bothFromAPI;
     constraint disable {
-        combine1(isDisabledIfBothFromAPI -> bothFromAPI) => !isDisabledIfBothFromAPI;
-      }
+      combine1(isDisabledIfBothFromAPI -> bothFromAPI) => !isDisabledIfBothFromAPI;
+    }
+    
+    var searchH="", searchW="", searchBoth;
+    constraint search {
+      searchForBothH(searchBoth -> searchW) => "";
+      // searchForBothW(searchBoth -> searchH) => "";
+      invidual( searchW -> searchBoth) => "";
+    }
+
   `;
 
   comp.vs.w.value.subscribeValue((n: number) =>
@@ -59,10 +68,22 @@
     console.log("HD: Value of bothFromAPI: " + v)
   );
 
-  system.addComponent(comp);
-  //system.addComponent(disable); // Hva gjør denne?
-  system.update();
+  comp.vs.searchH.value.subscribeValue((n: string) =>
+    console.log("HD: Value of searchH: " + n)
+  );
 
+  comp.vs.searchW.value.subscribeValue((n: string) =>
+    console.log("HD: Value of searchW: " + n)
+  );
+
+  comp.vs.searchBoth.value.subscribeValue((n: string) =>
+    console.log("HD: Value of searchBoth: " + n)
+  );
+
+  console.log(comp);
+  system.addComponent(comp);
+  system.update();
+  
   onMount(() => {
     // HDv.subscibeValue
     // error håndtering
@@ -76,10 +97,20 @@
     HDw.subscribeValue((v: number) => widthS.set(v));
     HDd.subscribeValue((v: number) => depthS.set(v));
     HDh.subscribeValue((v: number) => heightS.set(v));
+    HDv.subscribeValue((v: number) => volumS.set(v));
+
+    HDbothFromAPI.subscribeValue((b: boolean) => bothFromAPI.set(b));
+    HDisDisabledIfBothFromAPI.subscribeValue((b: boolean) =>
+      disabledButtonIfBothFromAPI.set(b)
+    );
+
+    HDsearchHeight.subscribeValue((s: string) => searchHeightS.set(s));
+    HDsearchWidth.subscribeValue((s: string) => searchWidthS.set(s));
+    HDsearchBoth.subscribeValue((s: string) => searchBothS.set(s));
   });
 
   function setHDValue<T>(HDvariable: Variable<T>, n: T) {
-    // TODO: qickfix so that the variable dosnt update twice with the value set by the first call 
+    // TODO: qickfix so that the variable dosnt update twice with the value set by the first call
     if (n !== HDvariable.value) {
       HDvariable.set(n);
     }
@@ -90,23 +121,31 @@
   let HDd: Variable<number> = comp.vs.d.value;
   let HDh: Variable<number> = comp.vs.h.value;
 
-  let HDisDisabledIfBothFromAPI: Variable<boolean> = comp.vs.isDisabledIfBothFromAPI.value;
+  let HDisDisabledIfBothFromAPI: Variable<boolean> =
+    comp.vs.isDisabledIfBothFromAPI.value;
   let HDbothFromAPI: Variable<boolean> = comp.vs.bothFromAPI.value;
+
+  let HDsearchHeight: Variable<string> = comp.vs.searchH.value;
+  let HDsearchWidth: Variable<string> = comp.vs.searchW.value;
+  let HDsearchBoth: Variable<string> = comp.vs.searchBoth.value;
+
 
   $: {
     console.log("---------------------");
     console.log(`Value of width: ${$widthS}`);
     console.log(`Value of height: ${$heightS}`);
     console.log(`Value of depth: ${$depthS}`);
-    console.log(`Value of depth: ${$volumS}`);
+    console.log(`Value of volum: ${$volumS}`);
     console.log(`Value of bothFromAPI: ${$bothFromAPI}`);
     console.log(
       `Value of isDisabledIfBothFromAPI: ${$disabledButtonIfBothFromAPI}`
     );
+    console.log(`Value of searchH: ${$searchHeightS}`);
+    console.log(`Value of searchW: ${$searchWidthS}`);
+    console.log(`Value of searchBoth: ${$searchBothS}`);
     console.log("---------------------");
   }
 
-  let searchBoth = "";
   let likes = 0; // TODO: Likes only get set when both values comes from the picture
 
   const assignAPIValues = (
@@ -142,6 +181,17 @@
   $: {
     setHDValue(HDv, $volumS);
   }
+  $: {
+    setHDValue(HDsearchHeight, $searchHeightS);
+  }
+  $: {
+    setHDValue(HDsearchWidth, $searchWidthS);
+  }
+  $: {
+    setHDValue(HDsearchBoth, $searchBothS);
+  }
+
+
 </script>
 
 <main>
@@ -149,7 +199,7 @@
   <div>
     <p>
       <input
-        bind:value={searchBoth}
+        bind:value={$searchBothS}
         type="text"
         placeholder="alves"
         disabled={$bothFromAPI}
@@ -161,8 +211,9 @@
       <button
         disabled={$bothFromAPI}
         on:click={() =>
-          fetchPicture(searchBoth).then((res) => assignAPIValues(res, "both"))}
-        >BOTH</button
+          fetchPicture($searchBothS).then((res) =>
+            assignAPIValues(res, "both")
+          )}>BOTH</button
       >
     </p>
     <MetricColumn>
@@ -230,7 +281,7 @@
       <button
         slot="api-button"
         on:click={() => {
-          depthS.set(likes);
+          HDd.set(likes);
         }}
         type="submit"
         disabled={!bothFromAPI}>Get from likes</button

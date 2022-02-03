@@ -41,9 +41,8 @@
     
     var searchH="", searchW="", searchBoth;
     constraint search {
-      searchForBothH(searchBoth -> searchW) => "";
-      // searchForBothW(searchBoth -> searchH) => "";
-      invidual( searchW -> searchBoth) => "";
+      searchForBoth(searchBoth -> searchW, searchH) => ["", ""];
+      invidual(searchW, searchH -> searchBoth) => "";
     }
 
   `;

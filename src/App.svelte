@@ -17,6 +17,8 @@
   import MetricColumn from "./components/MetricColumn.svelte";
   import { volumS } from "./stores/volumStore";
   import { searchBothS } from "./stores/bothStore";
+import MetricColumnWrapper from "./__test__/slotComponentsWorkAround/MetricColumnWrapper.svelte";
+import { weightS } from "./stores/weightStore";
 
   const mssg = process.env.isProd
     ? "This is production mode"
@@ -44,8 +46,26 @@
       searchForBoth(searchBoth -> searchW, searchH) => ["", ""];
       invidual(searchW, searchH -> searchBoth) => "";
     }
+    /*
+    var t=3, p;
+    constraint test {
+      (t -> p) => myDict[t]()
+    }
+    */
 
   `;
+  /*
+ {
+   small: () => { 
+        var promise = new Promise((resolve, reject) => {
+          setTimeout(()=> {
+            resolve(t*2)
+          }, 3*1000)
+        });
+        return promise;
+      };
+ }
+ */
 
   comp.vs.w.value.subscribeValue((n: number) =>
     console.log("HD: Value of width: " + n)
@@ -106,6 +126,10 @@
     HDsearchHeight.subscribeValue((s: string) => searchHeightS.set(s));
     HDsearchWidth.subscribeValue((s: string) => searchWidthS.set(s));
     HDsearchBoth.subscribeValue((s: string) => searchBothS.set(s));
+/*
+    HDPromise.subscribeValue((p: any) => console.log(p))
+    HDTEST.subscibeValue((n:number) => Knut = n)
+    */
   });
 
   function setHDValue<T>(HDvariable: Variable<T>, n: T) {
@@ -127,7 +151,13 @@
   let HDsearchHeight: Variable<string> = comp.vs.searchH.value;
   let HDsearchWidth: Variable<string> = comp.vs.searchW.value;
   let HDsearchBoth: Variable<string> = comp.vs.searchBoth.value;
+/*
+  let HDPromise = comp.vs.p.value;
+  let HDTEST = comp.vs.t.value;
 
+  let promise;
+  let Knut = 0;
+  */
 
   $: {
     console.log("---------------------");
@@ -196,27 +226,8 @@
 <main>
   <h1>3D-Box</h1>
   <div>
-    <p>
-      <input
-        bind:value={$searchBothS}
-        type="text"
-        placeholder="alves"
-        disabled={$bothFromAPI}
-      />
-      <input type="checkbox" class="larger" on:change={bothFromAPI.change} /> Get
-      both values from REST API
-    </p>
-    <p>
-      <button
-        disabled={$bothFromAPI}
-        on:click={() =>
-          fetchPicture($searchBothS).then((res) =>
-            assignAPIValues(res, "both")
-          )}>BOTH</button
-      >
-    </p>
     <MetricColumn>
-      <span slot="metric">Width: </span>
+      <span slot="metric">Width (cm): </span>
       <input
         slot="metric-input"
         bind:value={$widthS}
@@ -224,25 +235,9 @@
         id="width"
         placeholder="width"
       />
-      <input
-        slot="api-search"
-        bind:value={$searchWidthS}
-        type="text"
-        placeholder="bookshelf"
-        disabled={$disabledButtonIfBothFromAPI}
-      />
-      <button
-        slot="api-button"
-        on:click={() =>
-          fetchPicture($searchWidthS).then((res) =>
-            assignAPIValues(res, "width")
-          )}
-        type="submit"
-        disabled={$disabledButtonIfBothFromAPI}>Get from REST API</button
-      >
     </MetricColumn>
     <MetricColumn>
-      <span slot="metric">Height:</span>
+      <span slot="metric">Height (cm):</span>
       <input
         slot="metric-input"
         bind:value={$heightS}
@@ -250,25 +245,9 @@
         id="height"
         placeholder="height"
       />
-      <input
-        slot="api-search"
-        bind:value={$searchHeightS}
-        type="text"
-        placeholder="table"
-        disabled={$disabledButtonIfBothFromAPI}
-      />
-      <button
-        slot="api-button"
-        on:click={() =>
-          fetchPicture($searchHeightS).then((res) =>
-            assignAPIValues(res, "height")
-          )}
-        type="submit"
-        disabled={$disabledButtonIfBothFromAPI}>Get from REST API</button
-      >
     </MetricColumn>
     <MetricColumn>
-      <span slot="metric">Depth:</span>
+      <span slot="metric">Depth (cm):</span>
       <input
         slot="metric-input"
         bind:value={$depthS}
@@ -276,21 +255,44 @@
         id="depth"
         placeholder="depth"
       />
-
-      <button
-        slot="api-button"
-        on:click={() => {
-          HDd.set(likes);
-        }}
-        type="submit"
-        disabled={!bothFromAPI}>Get from likes</button
-      >
+    </MetricColumn>
+    <MetricColumn>
+      <span slot="metric">Weight (kg):</span>
+      <input
+        bind:value={$weightS}
+        slot="metric-input"
+        type="number"
+        id="weight"
+        placeholder="weight"
+      />
+    </MetricColumn>
+    <MetricColumn>
+      <span slot="metric">Volum (cm&#179):</span>
+      <input
+        bind:value={$volumS}
+        slot="metric-input"
+        type="number"
+        id="volume"
+        placeholder="volume"
+      />
+    </MetricColumn>
+    <MetricColumn>
+      <span slot="metric">Package Category:</span>
+      <input
+        slot="metric-input"
+        type="string"
+        id="pkgcat"
+      />
+    </MetricColumn>
+    <MetricColumn>
+      <span slot="metric">Price:</span>
+      <input
+        slot="metric-input"
+        type="number"
+        id="price"
+      />
     </MetricColumn>
   </div>
-  <p>
-    Volum:
-    <input bind:value={$volumS} type="number" />
-  </p>
 </main>
 
 <style>

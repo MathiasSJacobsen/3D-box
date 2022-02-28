@@ -17,8 +17,8 @@
   import MetricColumn from "./components/MetricColumn.svelte";
   import { volumS } from "./stores/volumStore";
   import { searchBothS } from "./stores/bothStore";
-import MetricColumnWrapper from "./__test__/slotComponentsWorkAround/MetricColumnWrapper.svelte";
-import { weightS } from "./stores/weightStore";
+  import { weightS } from "./stores/weightStore";
+import ThreeComp from "./components/threeComp.svelte";
 
   const mssg = process.env.isProd
     ? "This is production mode"
@@ -102,7 +102,7 @@ import { weightS } from "./stores/weightStore";
   console.log(comp);
   system.addComponent(comp);
   system.update();
-  
+
   onMount(() => {
     // HDv.subscibeValue
     // error håndtering
@@ -126,7 +126,7 @@ import { weightS } from "./stores/weightStore";
     HDsearchHeight.subscribeValue((s: string) => searchHeightS.set(s));
     HDsearchWidth.subscribeValue((s: string) => searchWidthS.set(s));
     HDsearchBoth.subscribeValue((s: string) => searchBothS.set(s));
-/*
+    /*
     HDPromise.subscribeValue((p: any) => console.log(p))
     HDTEST.subscibeValue((n:number) => Knut = n)
     */
@@ -151,7 +151,7 @@ import { weightS } from "./stores/weightStore";
   let HDsearchHeight: Variable<string> = comp.vs.searchH.value;
   let HDsearchWidth: Variable<string> = comp.vs.searchW.value;
   let HDsearchBoth: Variable<string> = comp.vs.searchBoth.value;
-/*
+  /*
   let HDPromise = comp.vs.p.value;
   let HDTEST = comp.vs.t.value;
 
@@ -219,79 +219,72 @@ import { weightS } from "./stores/weightStore";
   $: {
     setHDValue(HDsearchBoth, $searchBothS);
   }
-
-
 </script>
 
 <main>
   <h1>3D-Box</h1>
-  <div>
-    <MetricColumn>
-      <span slot="metric">Width (cm): </span>
-      <input
-        slot="metric-input"
-        bind:value={$widthS}
-        type="number"
-        id="width"
-        placeholder="width"
-      />
-    </MetricColumn>
-    <MetricColumn>
-      <span slot="metric">Height (cm):</span>
-      <input
-        slot="metric-input"
-        bind:value={$heightS}
-        type="number"
-        id="height"
-        placeholder="height"
-      />
-    </MetricColumn>
-    <MetricColumn>
-      <span slot="metric">Depth (cm):</span>
-      <input
-        slot="metric-input"
-        bind:value={$depthS}
-        type="number"
-        id="depth"
-        placeholder="depth"
-      />
-    </MetricColumn>
-    <MetricColumn>
-      <span slot="metric">Weight (kg):</span>
-      <input
-        bind:value={$weightS}
-        slot="metric-input"
-        type="number"
-        id="weight"
-        placeholder="weight"
-      />
-    </MetricColumn>
-    <MetricColumn>
-      <span slot="metric">Volum (cm&#179):</span>
-      <input
-        bind:value={$volumS}
-        slot="metric-input"
-        type="number"
-        id="volume"
-        placeholder="volume"
-      />
-    </MetricColumn>
-    <MetricColumn>
-      <span slot="metric">Package Category:</span>
-      <input
-        slot="metric-input"
-        type="string"
-        id="pkgcat"
-      />
-    </MetricColumn>
-    <MetricColumn>
-      <span slot="metric">Price:</span>
-      <input
-        slot="metric-input"
-        type="number"
-        id="price"
-      />
-    </MetricColumn>
+  <div class="mainHub">
+    <div>
+      <MetricColumn>
+        <span slot="metric">Width (cm): </span>
+        <input
+          slot="metric-input"
+          bind:value={$widthS}
+          type="number"
+          id="width"
+          placeholder="width"
+        />
+      </MetricColumn>
+      <MetricColumn>
+        <span slot="metric">Height (cm):</span>
+        <input
+          slot="metric-input"
+          bind:value={$heightS}
+          type="number"
+          id="height"
+          placeholder="height"
+        />
+      </MetricColumn>
+      <MetricColumn>
+        <span slot="metric">Depth (cm):</span>
+        <input
+          slot="metric-input"
+          bind:value={$depthS}
+          type="number"
+          id="depth"
+          placeholder="depth"
+        />
+      </MetricColumn>
+      <MetricColumn>
+        <span slot="metric">Weight (kg):</span>
+        <input
+          bind:value={$weightS}
+          slot="metric-input"
+          type="number"
+          id="weight"
+          placeholder="weight"
+        />
+      </MetricColumn>
+      <MetricColumn>
+        <span slot="metric">Volum (cm&#179):</span>
+        <input
+          bind:value={$volumS}
+          slot="metric-input"
+          type="number"
+          id="volume"
+          placeholder="volume"
+        />
+      </MetricColumn>
+      <MetricColumn>
+        <span slot="metric">Package Category:</span>
+        <input slot="metric-input" type="string" id="pkgcat" />
+      </MetricColumn>
+      <MetricColumn>
+        <span slot="metric">Price:</span>
+        <input slot="metric-input" type="number" id="price" />
+      </MetricColumn>
+    </div>
+    <ThreeComp/>
   </div>
 </main>
 
@@ -315,8 +308,8 @@ import { weightS } from "./stores/weightStore";
       max-width: none;
     }
   }
-  input.larger {
-    width: 30px;
-    height: 30px;
+  .mainHub {
+    display: flex;
+    justify-content: center;
   }
 </style>

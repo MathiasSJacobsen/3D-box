@@ -9,17 +9,18 @@
     Mesh,
     MeshStandardMaterial,
     WebGLRenderer,
+CircleBufferGeometry,
+SphereBufferGeometry,
   } from "svelthree";
 import { depthS } from "../stores/depthStores";
+import { heightS } from "../stores/heightStores";
+import { widthS } from "../stores/widthStores";
 
-  let cubeGeometry = new BoxBufferGeometry(1, 1, 1);
+  let cubeGeometry = new BoxBufferGeometry($heightS, $widthS, $depthS);
   let cubeMaterial = new MeshStandardMaterial()
-  
 
-  $: {
-    console.log(`Dette er i threeJS ${$depthS}`);
-
-  }
+  let sphereGeometry = new SphereBufferGeometry(1, 64, 32)
+  let sphereMaterial = new MeshStandardMaterial()
 
 </script>
 
@@ -40,15 +41,26 @@ import { depthS } from "../stores/depthStores";
         rot={[0.5, 0.6, 0]}
         scale={[1, 1, 1]} 
         interact
-        onClick={()=> cubeGeometry = new BoxBufferGeometry($depthS, 1, 1) }
+        onClick={()=> cubeGeometry = new BoxBufferGeometry($heightS, $widthS, $depthS) }
         />
+        <!--- fotbal for comp
+        <Mesh
+          {scene}
+          geometry={sphereGeometry}
+          material={sphereMaterial}
+          mat={{ roughness: 0.5, metalness: 0.5, color: 0xF6E05E, }}
+          pos={[-0.8, 0, 0]}
+          rot={[0.5, 0.6, 0]}
+          scale={[1, 1, 1]} 
+        />
+        -->
     </Scene>
   
     <WebGLRenderer
       {sti}
       sceneId="scene1"
       camId="cam1"
-      config={{ antialias: true, alpha: false }} />
+      config={{ antialias: true, alpha: true }} />
   
   </Canvas>
 </div>

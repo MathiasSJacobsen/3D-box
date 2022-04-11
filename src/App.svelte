@@ -68,6 +68,16 @@
         }
       }
     }
+    var weightErrorMessage = "";
+    constraint error {
+      m1(kg -> weightErrorMessage) => {
+        if (kg > 35) {
+          return "Package is over the maximum weight of 35kg";
+        } else {
+          return "";
+        }
+      }
+    }
 
     /*
     var t=3, p;
@@ -108,6 +118,10 @@
     console.log("HD: Value of price: " + n)
   );
 
+  comp.vs.weightErrorMessage.value.subscribeValue((n: string) =>
+    console.log("HD: Value of weightErrorMessage: " + n)
+  );
+
   system.addComponent(comp);
   system.update();
 
@@ -127,6 +141,9 @@
     HDv.subscribeValue((v: number) => volumS.set(v));
     HDPrice.subscribeValue((v: number) => price = v);
     HDkg.subscribeValue((v: number) => weightS.set(v));
+    HDweightErrorMessage.subscribeValue((v: string) =>
+      weightErrorMessage = v
+    );
 
     /*
     HDPromise.subscribeValue((p: any) => console.log(p))
@@ -148,8 +165,10 @@
 
   let HDPrice: Variable<number> = comp.vs.price.value;
   let HDkg: Variable<number> = comp.vs.kg.value;
+  let HDweightErrorMessage: Variable<string> = comp.vs.weightErrorMessage.value;
 
   let price: number;
+  let weightErrorMessage: string;
   /*
   let HDPromise = comp.vs.p.value;
   let HDTEST = comp.vs.t.value;
@@ -201,6 +220,9 @@
   $: {
     setHDValue(HDkg, $weightS);
   }
+  $: {
+    setHDValue(HDweightErrorMessage, weightErrorMessage);
+  }
   
 </script>
 
@@ -247,6 +269,7 @@
           id="weight"
           placeholder="weight"
         />
+        <span slot="metric-errormessage">{weightErrorMessage}</span>
       </MetricColumn>
       <MetricColumn>
         <span slot="metric">Volum (cm&#179):</span>

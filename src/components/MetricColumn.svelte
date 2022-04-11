@@ -5,6 +5,9 @@
   <div id="metric-input" class="flex-item">
     <slot name="metric-input"><!-- optional fallback --></slot>
   </div>
+  <div id="metric-errormessage" class="flex-item">
+    <slot name="metric-errormessage"><!-- optional fallback --></slot>
+  </div>
 </div>
 
 <style>
@@ -17,5 +20,9 @@
 
   .dimention div {
     padding: 3px;
+  }
+
+  #metric-errormessage {
+    color: red;
   }
 </style>

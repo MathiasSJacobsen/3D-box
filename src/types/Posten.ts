@@ -1,7 +1,8 @@
 export type NorgesPakke = {
     minWeight: number, // KG
     maxWeight: number, // KG
-    box: Box
+    box: Box,
+    price: number, // NOK
 }
 
 type Box = {

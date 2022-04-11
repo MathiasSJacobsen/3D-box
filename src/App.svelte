@@ -5,20 +5,15 @@
     component,
   } from "./hotdrink/hotdrink";
   import { depthS } from "./stores/depthStores";
-  import {
-    bothFromAPI,
-    disabledButtonIfBothFromAPI,
-  } from "./stores/disablingStores";
-  import { heightS, searchHeightS } from "./stores/heightStores";
-  import { widthS, searchWidthS } from "./stores/widthStores";
-  import { fetchPicture } from "./api/unsplash";
+  import { heightS } from "./stores/heightStores";
+  import { widthS } from "./stores/widthStores";
   import type { Searchdims } from "./types/SearchDim";
   import type { UnsplashSearchResponseType } from "./types/UnsplashTypes";
   import MetricColumn from "./components/MetricColumn.svelte";
   import { volumS } from "./stores/volumStore";
-  import { searchBothS } from "./stores/bothStore";
   import { weightS } from "./stores/weightStore";
-import ThreeComp from "./components/threeComp.svelte";
+  import ThreeComp from "./components/threeComp.svelte";
+  import { BOXES, selectedPackageSize } from "./api/posten/pakker";
 
   const mssg = process.env.isProd
     ? "This is production mode"
@@ -36,24 +31,26 @@ import ThreeComp from "./components/threeComp.svelte";
       (v, w, h -> d) => v/(w*h);
       (v, d, h -> w) => v/(d*h);
     }	
-    var isDisabledIfBothFromAPI=false, bothFromAPI;
-    constraint disable {
-      combine1(isDisabledIfBothFromAPI -> bothFromAPI) => !isDisabledIfBothFromAPI;
+
+    var price = 0, kg = 0;
+    constraint price {
+      m1(w, d, h, kg -> price) => {
+        if (w <= 25 && d <= 12 && h <= 35 && kg <= 5) {
+          return 70;
+        } else if (w <= 30 && d <= 20 && h <= 50 && kg <= 10) {
+          return 169;
+        } 
+      }
     }
-    
-    var searchH="", searchW="", searchBoth;
-    constraint search {
-      searchForBoth(searchBoth -> searchW, searchH) => ["", ""];
-      invidual(searchW, searchH -> searchBoth) => "";
-    }
+
     /*
     var t=3, p;
     constraint test {
       (t -> p) => myDict[t]()
     }
     */
-
   `;
+
   /*
  {
    small: () => { 
@@ -66,6 +63,7 @@ import ThreeComp from "./components/threeComp.svelte";
       };
  }
  */
+
 
   comp.vs.w.value.subscribeValue((n: number) =>
     console.log("HD: Value of width: " + n)
@@ -80,26 +78,10 @@ import ThreeComp from "./components/threeComp.svelte";
     console.log("HD: Value of volum: " + n)
   );
 
-  comp.vs.isDisabledIfBothFromAPI.value.subscribeValue((v: boolean) =>
-    console.log("HD: Value of isDisabledIfBothFromAPI: " + v)
-  );
-  comp.vs.bothFromAPI.value.subscribeValue((v: boolean) =>
-    console.log("HD: Value of bothFromAPI: " + v)
+  comp.vs.price.value.subscribeValue((n: number) =>
+    console.log("HD: Value of price: " + n)
   );
 
-  comp.vs.searchH.value.subscribeValue((n: string) =>
-    console.log("HD: Value of searchH: " + n)
-  );
-
-  comp.vs.searchW.value.subscribeValue((n: string) =>
-    console.log("HD: Value of searchW: " + n)
-  );
-
-  comp.vs.searchBoth.value.subscribeValue((n: string) =>
-    console.log("HD: Value of searchBoth: " + n)
-  );
-
-  console.log(comp);
   system.addComponent(comp);
   system.update();
 
@@ -117,15 +99,9 @@ import ThreeComp from "./components/threeComp.svelte";
     HDd.subscribeValue((v: number) => depthS.set(v));
     HDh.subscribeValue((v: number) => heightS.set(v));
     HDv.subscribeValue((v: number) => volumS.set(v));
+    HDPrice.subscribeValue((v: number) => price = v);
+    HDkg.subscribeValue((v: number) => weightS.set(v));
 
-    HDbothFromAPI.subscribeValue((b: boolean) => bothFromAPI.set(b));
-    HDisDisabledIfBothFromAPI.subscribeValue((b: boolean) =>
-      disabledButtonIfBothFromAPI.set(b)
-    );
-
-    HDsearchHeight.subscribeValue((s: string) => searchHeightS.set(s));
-    HDsearchWidth.subscribeValue((s: string) => searchWidthS.set(s));
-    HDsearchBoth.subscribeValue((s: string) => searchBothS.set(s));
     /*
     HDPromise.subscribeValue((p: any) => console.log(p))
     HDTEST.subscibeValue((n:number) => Knut = n)
@@ -144,13 +120,10 @@ import ThreeComp from "./components/threeComp.svelte";
   let HDd: Variable<number> = comp.vs.d.value;
   let HDh: Variable<number> = comp.vs.h.value;
 
-  let HDisDisabledIfBothFromAPI: Variable<boolean> =
-    comp.vs.isDisabledIfBothFromAPI.value;
-  let HDbothFromAPI: Variable<boolean> = comp.vs.bothFromAPI.value;
+  let HDPrice: Variable<number> = comp.vs.price.value;
+  let HDkg: Variable<number> = comp.vs.kg.value;
 
-  let HDsearchHeight: Variable<string> = comp.vs.searchH.value;
-  let HDsearchWidth: Variable<string> = comp.vs.searchW.value;
-  let HDsearchBoth: Variable<string> = comp.vs.searchBoth.value;
+  let price: number;
   /*
   let HDPromise = comp.vs.p.value;
   let HDTEST = comp.vs.t.value;
@@ -165,17 +138,10 @@ import ThreeComp from "./components/threeComp.svelte";
     console.log(`Value of height: ${$heightS}`);
     console.log(`Value of depth: ${$depthS}`);
     console.log(`Value of volum: ${$volumS}`);
-    console.log(`Value of bothFromAPI: ${$bothFromAPI}`);
-    console.log(
-      `Value of isDisabledIfBothFromAPI: ${$disabledButtonIfBothFromAPI}`
-    );
-    console.log(`Value of searchH: ${$searchHeightS}`);
-    console.log(`Value of searchW: ${$searchWidthS}`);
-    console.log(`Value of searchBoth: ${$searchBothS}`);
+    console.log(`Value of price: ${price}`);
+    console.log(`Value of weight: ${$weightS}`);
     console.log("---------------------");
   }
-
-  let likes = 0; // TODO: Likes only get set when both values comes from the picture
 
   const assignAPIValues = (
     JSONresponse: UnsplashSearchResponseType | undefined,
@@ -187,11 +153,13 @@ import ThreeComp from "./components/threeComp.svelte";
     else if (dim === "both") {
       HDw.set(JSONresponse.results[0].width);
       HDh.set(JSONresponse.results[0].height);
-      likes = JSONresponse.results[0].likes;
     } else console.log("Didnt find the property");
   };
 
   // everytime the "svelte-variable" changes the hd is also upadted
+  $: {
+    setHDValue(HDv, $volumS);
+  }
   $: {
     setHDValue(HDw, $widthS);
   }
@@ -202,23 +170,12 @@ import ThreeComp from "./components/threeComp.svelte";
     setHDValue(HDd, $depthS);
   }
   $: {
-    setHDValue(HDbothFromAPI, $bothFromAPI);
+    setHDValue(HDPrice, price);
   }
   $: {
-    setHDValue(HDisDisabledIfBothFromAPI, $disabledButtonIfBothFromAPI);
+    setHDValue(HDkg, $weightS);
   }
-  $: {
-    setHDValue(HDv, $volumS);
-  }
-  $: {
-    setHDValue(HDsearchHeight, $searchHeightS);
-  }
-  $: {
-    setHDValue(HDsearchWidth, $searchWidthS);
-  }
-  $: {
-    setHDValue(HDsearchBoth, $searchBothS);
-  }
+  
 </script>
 
 <main>
@@ -277,14 +234,18 @@ import ThreeComp from "./components/threeComp.svelte";
       </MetricColumn>
       <MetricColumn>
         <span slot="metric">Package Category:</span>
-        <input slot="metric-input" type="string" id="pkgcat" />
+        <select bind:value={$selectedPackageSize} slot="metric-input">
+          {#each BOXES as box}
+            <option>{box.name}</option>
+          {/each}
+        </select>
       </MetricColumn>
       <MetricColumn>
         <span slot="metric">Price:</span>
-        <input slot="metric-input" type="number" id="price" />
+        <input bind:value={price} slot="metric-input" type="number" id="price" />
       </MetricColumn>
     </div>
-    <ThreeComp/>
+    <ThreeComp />
   </div>
 </main>
 

@@ -14,6 +14,7 @@
   import { weightS } from "./stores/weightStore";
   import ThreeComp from "./components/threeComp.svelte";
   import { BOXES, selectedPackageSize } from "./api/posten/pakker";
+import Slider from "./components/Slider.svelte";
 
   const mssg = process.env.isProd
     ? "This is production mode"
@@ -240,6 +241,7 @@
           placeholder="width"
         />
       </MetricColumn>
+      <Slider/>
       <MetricColumn>
         <span slot="metric">Height (cm):</span>
         <input

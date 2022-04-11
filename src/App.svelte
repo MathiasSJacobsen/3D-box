@@ -35,11 +35,37 @@
     var price = 0, kg = 0;
     constraint price {
       m1(w, d, h, kg -> price) => {
-        if (w <= 25 && d <= 12 && h <= 35 && kg <= 5) {
-          return 70;
-        } else if (w <= 30 && d <= 20 && h <= 50 && kg <= 10) {
-          return 169;
-        } 
+        if (kg <= 5) {
+          if (h <= 35 && w <= 25 && d <=12) {
+            return 70;
+          } else if (h <= 120 && w <= 60 && d <=60) {
+            return 129;
+          } else {
+            let spesialgodstillegg = 149;
+            return 129 + spesialgodstillegg;
+          }
+        } else if (kg <=10) {
+          if (h <= 120 && w <= 60 && d <=60) {
+            return 129;
+          } else {
+            let spesialgodstillegg = 149;
+            return 129 + spesialgodstillegg;
+          }
+        } else if (kg <= 25) {
+          if (h <= 120 && w <= 60 && d <=60) {
+            return 229;
+          } else {
+            let spesialgodstillegg = 149;
+            return 229 + spesialgodstillegg;
+          }
+        } else if (kg <= 35) {
+          if (h <= 120 && w <= 60 && d <=60) {
+            return 299;
+          } else {
+            let spesialgodstillegg = 149;
+            return 299 + spesialgodstillegg;
+          }
+        }
       }
     }
 

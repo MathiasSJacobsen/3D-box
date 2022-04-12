@@ -92,7 +92,7 @@ import { depthS, heightS, volumS, weightS, widthS } from "./stores/metricStores"
 <main>
   <h1>3D-Box</h1>
   <div class="mainHub">
-    <div>
+    <div class="metrics">
       <MetricColumn>
         <span slot="metric">Width (cm): </span>
         <input
@@ -201,5 +201,9 @@ import { depthS, heightS, volumS, weightS, widthS } from "./stores/metricStores"
   .mainHub {
     display: flex;
     justify-content: center;
+    align-items: center;
+  }
+  .metrics {
+    padding-right: 2em;
   }
 </style>

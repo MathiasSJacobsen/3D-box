@@ -29,11 +29,13 @@ import { depthS, heightS, widthS } from "../stores/metricStores";
     camDepth = findMax([$depthS, $heightS, $widthS]) * 3;
     cubeGeometry = new BoxBufferGeometry($widthS, $heightS, $depthS);
   }
+  let canvasWidth = window.innerWidth;
+  let canvasHeight = window.innerHeight;
 
 </script>
 
 <div>
-  <Canvas let:sti w={500} h={500} interactive>
+  <Canvas let:sti w={canvasWidth*.6} h={canvasHeight * .6} interactive>
 
     <Scene {sti} let:scene id="scene1" props={{ background: 0x00000 } } >
       
@@ -48,7 +50,6 @@ import { depthS, heightS, widthS } from "../stores/metricStores";
         pos={[-1, 0, 0]}
         rot={[.3, .4, 0]}
         scale={[1, 1, 1]} 
-        interact
         />
 
         <Mesh

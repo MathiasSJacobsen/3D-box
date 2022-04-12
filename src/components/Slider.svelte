@@ -1,7 +1,7 @@
 <script>
     let slider;
-    let sliderMin = 1;
-    export let sliderMax = 100;
+    export let sliderMin;;
+    export let sliderMax;
     export let sliderValue;
   </script>
   

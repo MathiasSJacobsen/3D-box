@@ -105,6 +105,8 @@ import { depthS, heightS, volumS, weightS, widthS } from "./stores/metricStores"
         <Slider
           slot="metric-slider"
           sliderValue={widthS}
+          sliderMax={60}
+          sliderMin={13}
         />
       </MetricColumn>
       <MetricColumn>
@@ -119,6 +121,8 @@ import { depthS, heightS, volumS, weightS, widthS } from "./stores/metricStores"
         <Slider
           slot="metric-slider"
           sliderValue={heightS}
+          sliderMin={23}
+          sliderMax={120}
         />
       </MetricColumn>
       <MetricColumn>
@@ -133,6 +137,8 @@ import { depthS, heightS, volumS, weightS, widthS } from "./stores/metricStores"
         <Slider
           slot="metric-slider"
           sliderValue={depthS}
+          sliderMax={60}
+          sliderMin={1}
         />
       </MetricColumn>
       <MetricColumn>
@@ -148,6 +154,7 @@ import { depthS, heightS, volumS, weightS, widthS } from "./stores/metricStores"
           slot="metric-slider"
           sliderValue={weightS}
           sliderMax={35}
+          sliderMin={0}
         />
         <span slot="metric-errormessage">{weightErrorMessage}</span>
       </MetricColumn>

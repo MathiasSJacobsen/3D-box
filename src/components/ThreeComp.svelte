@@ -14,7 +14,7 @@
 import { depthS, heightS, widthS } from "../stores/metricStores";
 
 
-  let radiusFotball = 1
+  let radiusFotball = 3
   let cubeGeometry = new BoxBufferGeometry($heightS, $widthS, $depthS);
   let cubeMaterial = new MeshStandardMaterial()
 
@@ -57,7 +57,7 @@ import { depthS, heightS, widthS } from "../stores/metricStores";
           geometry={sphereGeometry}
           material={sphereMaterial}
           mat={{ roughness: 0.5, metalness: 0.5, color: 0xF6E05E, }}
-          pos={[$widthS*(3/4), 0, 0]}
+          pos={[$widthS*(3/4)+ ($depthS/5), 0, 0]}
           rot={[.2, .2, 0]}
           scale={[1, 1, 1]} 
         />
@@ -71,6 +71,9 @@ import { depthS, heightS, widthS } from "../stores/metricStores";
       config={{ antialias: true, alpha: true }} />
   
   </Canvas>
+  <div>
+    <span>The yellow ball is a point of refrence. The ball have a radius of {radiusFotball}. </span>
+  </div>
 </div>
 
 

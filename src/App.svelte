@@ -51,19 +51,6 @@ import { depthS, heightS, volumS, weightS, widthS } from "./stores/metricStores"
     console.log("---------------------");
   }
 
-  const assignAPIValues = (
-    JSONresponse: UnsplashSearchResponseType | undefined,
-    dim: Searchdims
-  ) => {
-    if (!JSONresponse) return;
-    if (dim === "width") HDw.set(JSONresponse.results[0].width);
-    else if (dim === "height") HDh.set(JSONresponse.results[0].height);
-    else if (dim === "both") {
-      HDw.set(JSONresponse.results[0].width);
-      HDh.set(JSONresponse.results[0].height);
-    } else console.log("Didnt find the property");
-  };
-
   // everytime the "svelte-variable" changes the hd is also upadted
   $: {
     setHDValue(HDv, $volumS);

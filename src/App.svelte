@@ -1,11 +1,11 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import MetricColumn from "./components/MetricColumn.svelte";
-  import ThreeComp from "../components/threeComp.svelte";
+  import ThreeJSSvelte from "./components/ThreeJSSvelte.svelte";
   import { BOXES, selectedPackageSize } from "./api/posten/pakker";
-import Slider from "./components/Slider.svelte";
-import { HDd, HDh, HDkg, HDPrice, HDv, HDw, HDweightErrorMessage, setHDValue } from "./HD";
-import { depthS, heightS, volumS, weightS, widthS } from "./stores/metricStores";
+  import Slider from "./components/Slider.svelte";
+  import { HDd, HDh, HDkg, HDPrice, HDv, HDw, HDweightErrorMessage, setHDValue } from "./HD";
+  import { depthS, heightS, volumS, weightS, widthS } from "./stores/metricStores";
 
   const mssg = process.env.isProd
     ? "This is production mode"
@@ -166,7 +166,7 @@ import { depthS, heightS, volumS, weightS, widthS } from "./stores/metricStores"
         <input bind:value={price} slot="metric-input" type="number" id="price" />
       </MetricColumn>
     </div>
-    <ThreeComp />
+    <ThreeJSSvelte />
   </div>
 </main>
 

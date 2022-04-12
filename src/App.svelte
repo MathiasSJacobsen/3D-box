@@ -106,8 +106,11 @@ import { HDd, HDh, HDkg, HDPrice, HDv, HDw, HDweightErrorMessage, setHDValue } f
           id="width"
           placeholder="width"
         />
+        <Slider
+          slot="metric-slider"
+          sliderValue={widthS}
+        />
       </MetricColumn>
-      <Slider/>
       <MetricColumn>
         <span slot="metric">Height (cm):</span>
         <input
@@ -116,6 +119,10 @@ import { HDd, HDh, HDkg, HDPrice, HDv, HDw, HDweightErrorMessage, setHDValue } f
           type="number"
           id="height"
           placeholder="height"
+        />
+        <Slider
+          slot="metric-slider"
+          sliderValue={heightS}
         />
       </MetricColumn>
       <MetricColumn>
@@ -127,6 +134,10 @@ import { HDd, HDh, HDkg, HDPrice, HDv, HDw, HDweightErrorMessage, setHDValue } f
           id="depth"
           placeholder="depth"
         />
+        <Slider
+          slot="metric-slider"
+          sliderValue={depthS}
+        />
       </MetricColumn>
       <MetricColumn>
         <span slot="metric">Weight (kg):</span>
@@ -136,6 +147,11 @@ import { HDd, HDh, HDkg, HDPrice, HDv, HDw, HDweightErrorMessage, setHDValue } f
           type="number"
           id="weight"
           placeholder="weight"
+        />
+        <Slider
+          slot="metric-slider"
+          sliderValue={weightS}
+          sliderMax={35}
         />
         <span slot="metric-errormessage">{weightErrorMessage}</span>
       </MetricColumn>

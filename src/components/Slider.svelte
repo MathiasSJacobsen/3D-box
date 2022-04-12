@@ -1,15 +1,15 @@
 <script>
-  
+import { widthS } from "../stores/widthStores";
+
+
     let slider;
     let sliderMin = 1;
-    let sliderValue = sliderMin
-    let sliderMax = 100;
-  
-    //$sliderValue = sliderMin;
+    export let sliderMax = 100;
+    export let sliderValue;
+
   </script>
   
   <style>
-    
   </style>
   
     <div class="slider">
@@ -19,6 +19,6 @@
         min={sliderMin}
         step="1"
         max={sliderMax}
-        bind:value={sliderValue}
+        bind:value={$sliderValue}
         id="myRange" />
     </div>

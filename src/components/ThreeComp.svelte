@@ -9,18 +9,26 @@
     Mesh,
     MeshStandardMaterial,
     WebGLRenderer,
-CircleBufferGeometry,
-SphereBufferGeometry,
+    SphereBufferGeometry,
   } from "svelthree";
-import { depthS } from "../stores/depthStores";
-import { heightS } from "../stores/heightStores";
-import { widthS } from "../stores/widthStores";
+import { depthS, heightS, widthS } from "../stores/metricStores";
 
+
+  let radiusFotball = 1
   let cubeGeometry = new BoxBufferGeometry($heightS, $widthS, $depthS);
   let cubeMaterial = new MeshStandardMaterial()
 
-  let sphereGeometry = new SphereBufferGeometry(1, 64, 32)
+  let sphereGeometry = new SphereBufferGeometry(radiusFotball, 64, 32)
   let sphereMaterial = new MeshStandardMaterial()
+  const findMax = (arr: number[]) => {
+    return Math.max(...arr);
+  };
+  let camDepth = findMax([$depthS, $heightS, $widthS]) * 3;
+
+  $: {
+    camDepth = findMax([$depthS, $heightS, $widthS]) * 3;
+    cubeGeometry = new BoxBufferGeometry($widthS, $heightS, $depthS);
+  }
 
 </script>
 
@@ -29,7 +37,7 @@ import { widthS } from "../stores/widthStores";
 
     <Scene {sti} let:scene id="scene1" props={{ background: 0x00000 } } >
       
-      <PerspectiveCamera {scene} id="cam1" pos={[0, 0, 10]} lookAt={[0, 0, 0]} />
+      <PerspectiveCamera {scene} id="cam1" pos={[0, 0, camDepth]} lookAt={[0, 0, 0]} />
       <AmbientLight {scene} intensity={1.25} />
       <DirectionalLight {scene} pos={[3, 3, 3]} />
       <Mesh
@@ -37,23 +45,22 @@ import { widthS } from "../stores/widthStores";
         geometry={cubeGeometry}
         material={cubeMaterial}
         mat={{ roughness: 0.5, metalness: 0.5, color: 0xFF8001, }}
-        pos={[0, 0, 0]}
-        rot={[0.5, 0.6, 0]}
+        pos={[-1, 0, 0]}
+        rot={[.3, .4, 0]}
         scale={[1, 1, 1]} 
         interact
-        onClick={()=> cubeGeometry = new BoxBufferGeometry($heightS, $widthS, $depthS) }
         />
-        <!--- fotbal for comp
+
         <Mesh
           {scene}
           geometry={sphereGeometry}
           material={sphereMaterial}
           mat={{ roughness: 0.5, metalness: 0.5, color: 0xF6E05E, }}
-          pos={[-0.8, 0, 0]}
-          rot={[0.5, 0.6, 0]}
+          pos={[$widthS*(3/4), 0, 0]}
+          rot={[.2, .2, 0]}
           scale={[1, 1, 1]} 
         />
-        -->
+
     </Scene>
   
     <WebGLRenderer

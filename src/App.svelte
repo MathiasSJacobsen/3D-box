@@ -1,17 +1,13 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { depthS } from "./stores/depthStores";
-  import { heightS } from "./stores/heightStores";
-  import { widthS } from "./stores/widthStores";
   import type { Searchdims } from "./types/SearchDim";
   import type { UnsplashSearchResponseType } from "./types/UnsplashTypes";
   import MetricColumn from "./components/MetricColumn.svelte";
-  import { volumS } from "./stores/volumStore";
-  import { weightS } from "./stores/weightStore";
   import ThreeComp from "./components/threeComp.svelte";
   import { BOXES, selectedPackageSize } from "./api/posten/pakker";
 import Slider from "./components/Slider.svelte";
 import { HDd, HDh, HDkg, HDPrice, HDv, HDw, HDweightErrorMessage, setHDValue } from "./HD";
+import { depthS, heightS, volumS, weightS, widthS } from "./stores/metricStores";
 
   const mssg = process.env.isProd
     ? "This is production mode"

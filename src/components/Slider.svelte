@@ -1,12 +1,8 @@
 <script>
-import { widthS } from "../stores/widthStores";
-
-
     let slider;
     let sliderMin = 1;
     export let sliderMax = 100;
     export let sliderValue;
-
   </script>
   
   <style>

@@ -1,9 +1,5 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import Variable, {
-    defaultConstraintSystem,
-    component,
-  } from "./hotdrink/hotdrink";
   import { depthS } from "./stores/depthStores";
   import { heightS } from "./stores/heightStores";
   import { widthS } from "./stores/widthStores";
@@ -15,120 +11,17 @@
   import ThreeComp from "./components/threeComp.svelte";
   import { BOXES, selectedPackageSize } from "./api/posten/pakker";
 import Slider from "./components/Slider.svelte";
+import { HDd, HDh, HDkg, HDPrice, HDv, HDw, HDweightErrorMessage, setHDValue } from "./HD";
 
   const mssg = process.env.isProd
     ? "This is production mode"
     : "This is dev mode";
   console.log(mssg);
 
-  let system = defaultConstraintSystem;
-
-  let comp = component`
-    var w=1, d=1, h=1, v;
-    
-    constraint volum {
-      calculateVolum(w, d, h -> v) => w*d*h;
-      (v, d, w -> h) => v/(d*w);
-      (v, w, h -> d) => v/(w*h);
-      (v, d, h -> w) => v/(d*h);
-    }	
-
-    var price = 0, kg = 0;
-    constraint price {
-      m1(w, d, h, kg -> price) => {
-        if (kg <= 5) {
-          if (h <= 35 && w <= 25 && d <=12) {
-            return 70;
-          } else if (h <= 120 && w <= 60 && d <=60) {
-            return 129;
-          } else {
-            let spesialgodstillegg = 149;
-            return 129 + spesialgodstillegg;
-          }
-        } else if (kg <=10) {
-          if (h <= 120 && w <= 60 && d <=60) {
-            return 129;
-          } else {
-            let spesialgodstillegg = 149;
-            return 129 + spesialgodstillegg;
-          }
-        } else if (kg <= 25) {
-          if (h <= 120 && w <= 60 && d <=60) {
-            return 229;
-          } else {
-            let spesialgodstillegg = 149;
-            return 229 + spesialgodstillegg;
-          }
-        } else if (kg <= 35) {
-          if (h <= 120 && w <= 60 && d <=60) {
-            return 299;
-          } else {
-            let spesialgodstillegg = 149;
-            return 299 + spesialgodstillegg;
-          }
-        }
-      }
-    }
-    var weightErrorMessage = "";
-    constraint error {
-      m1(kg -> weightErrorMessage) => {
-        if (kg > 35) {
-          return "Package is over the maximum weight of 35kg";
-        } else {
-          return "";
-        }
-      }
-    }
-
-    /*
-    var t=3, p;
-    constraint test {
-      (t -> p) => myDict[t]()
-    }
-    */
-  `;
-
-  /*
- {
-   small: () => { 
-        var promise = new Promise((resolve, reject) => {
-          setTimeout(()=> {
-            resolve(t*2)
-          }, 3*1000)
-        });
-        return promise;
-      };
- }
- */
-
-
-  comp.vs.w.value.subscribeValue((n: number) =>
-    console.log("HD: Value of width: " + n)
-  );
-  comp.vs.d.value.subscribeValue((n: number) =>
-    console.log("HD: Value of depth: " + n)
-  );
-  comp.vs.h.value.subscribeValue((n: number) =>
-    console.log("HD: Value of height: " + n)
-  );
-  comp.vs.v.value.subscribeValue((n: number) =>
-    console.log("HD: Value of volum: " + n)
-  );
-
-  comp.vs.price.value.subscribeValue((n: number) =>
-    console.log("HD: Value of price: " + n)
-  );
-
-  comp.vs.weightErrorMessage.value.subscribeValue((n: string) =>
-    console.log("HD: Value of weightErrorMessage: " + n)
-  );
-
-  system.addComponent(comp);
-  system.update();
-
   onMount(() => {
     // HDv.subscibeValue
     // error håndtering
+    /*
     HDv.subscribe({
       next: (val: any) => {
         if (val.value) {
@@ -136,6 +29,7 @@ import Slider from "./components/Slider.svelte";
         }
       },
     });
+    */
     HDw.subscribeValue((v: number) => widthS.set(v));
     HDd.subscribeValue((v: number) => depthS.set(v));
     HDh.subscribeValue((v: number) => heightS.set(v));
@@ -145,38 +39,10 @@ import Slider from "./components/Slider.svelte";
     HDweightErrorMessage.subscribeValue((v: string) =>
       weightErrorMessage = v
     );
-
-    /*
-    HDPromise.subscribeValue((p: any) => console.log(p))
-    HDTEST.subscibeValue((n:number) => Knut = n)
-    */
   });
-
-  function setHDValue<T>(HDvariable: Variable<T>, n: T) {
-    // TODO: qickfix so that the variable dosnt update twice with the value set by the first call
-    if (n !== HDvariable.value) {
-      HDvariable.set(n);
-    }
-  }
-
-  let HDv: Variable<number> = comp.vs.v.value;
-  let HDw: Variable<number> = comp.vs.w.value;
-  let HDd: Variable<number> = comp.vs.d.value;
-  let HDh: Variable<number> = comp.vs.h.value;
-
-  let HDPrice: Variable<number> = comp.vs.price.value;
-  let HDkg: Variable<number> = comp.vs.kg.value;
-  let HDweightErrorMessage: Variable<string> = comp.vs.weightErrorMessage.value;
-
+  
   let price: number;
   let weightErrorMessage: string;
-  /*
-  let HDPromise = comp.vs.p.value;
-  let HDTEST = comp.vs.t.value;
-
-  let promise;
-  let Knut = 0;
-  */
 
   $: {
     console.log("---------------------");

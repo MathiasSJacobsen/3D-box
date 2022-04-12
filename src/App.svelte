@@ -1,9 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import type { Searchdims } from "./types/SearchDim";
-  import type { UnsplashSearchResponseType } from "./types/UnsplashTypes";
   import MetricColumn from "./components/MetricColumn.svelte";
-  import ThreeComp from "./components/threeComp.svelte";
+  import ThreeComp from "../components/threeComp.svelte";
   import { BOXES, selectedPackageSize } from "./api/posten/pakker";
 import Slider from "./components/Slider.svelte";
 import { HDd, HDh, HDkg, HDPrice, HDv, HDw, HDweightErrorMessage, setHDValue } from "./HD";

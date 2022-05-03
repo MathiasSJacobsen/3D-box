@@ -7,3 +7,17 @@ Understand the possibilities and limitations of constraint systems based on \gls
 The multiway dataflow constraint system used in the development of this project is
 HotDrink. Before developing this project I had no prior experience with HotDrink. 
 \\TODO: Skriv hva rapporten inneholder.
+\newpage
+
+\section{Constraint systems}
+\label{sec:constraint-systems}
+A constraint system can be seen as a tuple ${\langle V, C \rangle}$, where $V$ is a set 
+of \textit{variables} and $C$ a set of \textit{constraints}. Each variable in $V$ has a 
+associated value of a given type (string, integer, boolean, object, etc.). Each 
+constraint in $C$ is a tuple ${\langle R, r, M \rangle}$. The variables involved in the 
+constraint is given by ${R \subseteq V}$, $r$ is some \textit{n}-ary relation among 
+variables in $R$, where ${n = \lvert R \rvert}$. $M$ is a set of non-empty set of 
+\textit{constraint system methods}. Executing any method $m$ in $M$ enforces the 
+constraint by computing values for some subset og $R$, using another disjoint subset of 
+$R$ as inputs, such that the relation $R$ is satisfied. 
+

@@ -12,3 +12,20 @@
 	publisher = {USENIX Association},
 	address = {Berkeley, CA, USA},
 } 
+@inproceedings{HotDrink,
+author = {Foust, Gabriel and J\"{a}rvi, Jaakko and Parent, Sean},
+title = {Generating Reactive Programs for Graphical User Interfaces from Multi-Way Dataflow Constraint Systems},
+year = {2015},
+isbn = {9781450336871},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/2814204.2814207},
+doi = {10.1145/2814204.2814207},
+abstract = { For a GUI to remain responsive, it must be able to schedule lengthy tasks to be executed asynchronously. In the traditional approach to GUI implementation--writing functions to handle individual user events--asynchronous programming easily leads to defects. Ensuring that all data dependencies are respected is difficult when new events arrive while prior events are still being handled. Reactive programming techniques, gaining popularity in GUI programming, help since they make data dependencies explicit and enforce them automatically as variables' values change. However, data dependencies in GUIs usually change along with its state. Reactive programming must therefore describe a GUI as a collection of many reactive programs, whose interaction the programmer must explicitly coordinate. This paper presents a declarative approach for GUI programming that relieves the programmer from coordinating asynchronous computations. The approach is based on our prior work on "property models", where GUI state is maintained by a dataflow constraint system. A property model responds to user events by atomically constructing new data dependencies and scheduling asynchronous computations to enforce those dependencies. In essence, a property model dynamically generates a reactive program, adding to it as new events occur. The approach gives the following guarantee: the same sequence of events produces the same results, regardless of the timing of those events. },
+booktitle = {Proceedings of the 2015 ACM SIGPLAN International Conference on Generative Programming: Concepts and Experiences},
+pages = {121–130},
+numpages = {10},
+keywords = {Dataflow constraint systems, asynchronous programming, Graphical user interfaces},
+location = {Pittsburgh, PA, USA},
+series = {GPCE 2015}
+}

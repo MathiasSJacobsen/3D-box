@@ -21,3 +21,38 @@ variables in $R$, where ${n = \lvert R \rvert}$. $M$ is a set of non-empty set o
 constraint by computing values for some subset og $R$, using another disjoint subset of 
 $R$ as inputs, such that the relation $R$ is satisfied. 
 
+\section{HotDrink}
+
+In this project I used the multiway dataflow constraint system library 
+HotDrink~\cite{HotDrink}, witch is a JavaScript-based library for multiway dataflow 
+constraint systems in \gls{gui}s. Instead of writing explicit event handlers,
+the programmer writes declarative specification of data dependencies,
+from which the library derives the GUI behavior.
+This library features a \gls{dsl} for defining constraint systems.
+The \gls{dsl} allows one to specify \emph{components}, \emph{constraints}, \emph{methods} 
+and \emph{variables}.
+A component in HotDrink holds a set of constraints and variables, as described in 
+section~\ref{sec:constraint-systems}. It is often that variables depend on each other,
+in that case it gets into a setting of multi-way dataflow.
+
+The HotDrink \gls{dsl} is implemented JavaScript tagged template literals
+\footnote{\href{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals}{Template literals}}, 
+which can be seen in Listing~\ref{HotDrinkDSL}. This lets the programmer integrate the 
+library with frontend JavaScript frameworks such as 
+React\footnote{For more information about the framework can be found at \href{https://reactjs.org/}{reactjs.org}} and 
+Svelte\footnote{For more information about the framework can be found at \href{https://svelte.dev/}{svelte.dev}}. 
+
+
+
+\begin{lstlisting}[caption={Example of the HotDrink \gls{dsl}},label=HotDrinkDSL, language=hotdrink]
+import { component } from 'hot-drink';
+
+const comp = component`
+    var f=1337, c;
+
+    constraint c1 {
+        m1(c -> f) => c * (9/5) + 32;
+        m2(f -> c) => (f -32) * 5/9;
+    }
+`;
+\end{lstlisting}

@@ -23,7 +23,7 @@
     const findMax = (arr: number[]) => {
       return Math.max(...arr);
     };
-    
+
     let camDepth = findMax([$depthS, $heightS, $widthS]) * 3;
   
     $: {
@@ -73,7 +73,7 @@
     
     </Canvas>
     <div>
-      <span>The yellow ball is a point of refrence. The ball have a radius of {radiusTennisball}. </span>
+      <span>The yellow ball is a point of refrence. The ball is an average tennisball with a radius of {radiusTennisball}cm. </span>
     </div>
   </div>
   

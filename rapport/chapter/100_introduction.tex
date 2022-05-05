@@ -29,6 +29,7 @@ constraint by computing values for some subset og $R$, using another disjoint su
 $R$ as inputs, such that the relation $R$ is satisfied~\cite{AlgorithmsForUserInterfaces}. 
 
 \section{HotDrink}
+\label{sec:hotdrink}
 
 In this project I used the multiway dataflow constraint system library 
 HotDrink~\cite{HotDrink}, witch is a JavaScript-based library for multiway dataflow 
@@ -48,7 +49,7 @@ library with frontend JavaScript frameworks such as
 React\footnote{For more information about the framework can be found at \href{https://reactjs.org/}{reactjs.org}} and 
 Svelte\footnote{For more information about the framework can be found at \href{https://svelte.dev/}{svelte.dev}}. 
 
-\begin{lstlisting}[caption={Example of the HotDrink \gls{dsl}},label=HotDrinkBind, language=hotdrink]
+\begin{lstlisting}[caption={Example of the HotDrink \gls{dsl}},label=HotDrinkDSL, language=hotdrink]
 import { component } from 'hot-drink';
 
 const comp = component`
@@ -64,7 +65,7 @@ const comp = component`
 Currently there are no integrated methods in HotDrink to bind the constraint system to 
 frontend frameworks. So the programmer have to decide on the best way to integrate the 
 HotDrink to the frontend web application. 
-Listings~\ref{HotDrinkBind},~\ref{reactiveStatement},~\ref{onMountHotdrink} shows one 
+Listings~\ref{HotDrinkBinding},~\ref{reactiveStatement},~\ref{onMountHotdrink} shows one 
 way of binding HotDrink with Svelte.
 
 \begin{lstlisting}[caption={Function for binding HotDrink and Svelte variable},label=HotDrinkBinding, language=javascript]

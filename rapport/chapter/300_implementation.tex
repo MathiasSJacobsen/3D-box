@@ -98,7 +98,7 @@ A package can in many cases be seen as a box. We decided to make a web applicati
 that would give you the price for sending a package with Posten. To still keep the 
 application simple we decided to only support packages sent domesticity. Posten 
 measures the height, depth, width and weight of the package. Thus we had to add a new 
-variable to the constraint system, and with it the logic for calculating the price. 
+variable to the constraint system, see listing~\ref{hotdrinkprice}, and with it the logic for calculating the price. 
 Posten uses the following pricing 
 model~\cite{postenNorgespakken}\footnote{Any of the measures --- height, depth, width --- of the package is larger than the maximum allowed there is a special package fee (149 kr).} 
 for domestic packages:
@@ -114,3 +114,40 @@ for domestic packages:
     \end{tabular}
 \end{table}
 
+\begin{lstlisting}[caption={HotDrink logic for determining the price},label=hotdrinkprice, language=hotdrink]
+constraint price {
+    m1(w, d, h, kg -> price) => {
+        if (kg <= 5) {
+            if (h <= 35 && w <= 25 && d <=12) {
+                return 70;
+            } else if (h <= 120 && w <= 60 && d <=60) {
+                return 129;
+            } else {
+                let spesialgodstillegg = 149;
+                return 129 + spesialgodstillegg;
+            }
+        } else if (kg <=10) {
+            if (h <= 120 && w <= 60 && d <=60) {
+                return 129;
+            } else {
+                let spesialgodstillegg = 149;
+                return 129 + spesialgodstillegg;
+            }
+        } else if (kg <= 25) {
+            if (h <= 120 && w <= 60 && d <=60) {
+                return 229;
+            } else {
+                let spesialgodstillegg = 149;
+                return 229 + spesialgodstillegg;
+            }
+        } else if (kg <= 35) {
+            if (h <= 120 && w <= 60 && d <=60) {
+                return 299;
+            } else {
+                let spesialgodstillegg = 149;
+                return 299 + spesialgodstillegg;
+            }
+        }
+    }
+}
+\end{lstlisting}

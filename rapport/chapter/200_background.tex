@@ -1,0 +1,80 @@
+\chapter{Background}
+In this chapter…
+\section{Svelte}
+Svelte is a JavaScript framework used for building user interfaces, just like React, 
+Angular, Vue. Where some of these frameworks bulk there work in the browser, Svelte 
+shifts that work onto a compile step~\cite{sveltewebsite}. Svelte is written using 
+TypeScript. Instead of using virtual \gls{dom} svelte uses build time to covert the 
+code into JavaScript~\cite{sveltedocs}.
+
+\section{Constraint systems}
+\label{sec:constraint-systems}
+A constraint system can be seen as a tuple ${\langle V, C \rangle}$, where $V$ is a set 
+of \textit{variables} and $C$ a set of \textit{constraints}. Each variable in $V$ has a 
+associated value of a given type (string, integer, boolean, object, etc.). Each 
+constraint in $C$ is a tuple ${\langle R, r, M \rangle}$. The variables involved in the 
+constraint is given by ${R \subseteq V}$, $r$ is some \textit{n}-ary relation among 
+variables in $R$, where ${n = \lvert R \rvert}$. $M$ is a set of non-empty set of 
+\textit{constraint system methods}. Executing any method $m$ in $M$ enforces the 
+constraint by computing values for some subset og $R$, using another disjoint subset of 
+$R$ as inputs, such that the relation $R$ is satisfied~\cite{AlgorithmsForUserInterfaces}. 
+
+\section{HotDrink}
+\label{sec:hotdrink}
+
+In this project I used the multiway dataflow constraint system library 
+HotDrink~\cite{HotDrink}, witch is a JavaScript-based library for multiway dataflow 
+constraint systems in \gls{gui}s. Instead of writing explicit event handlers,
+the programmer writes declarative specification of data dependencies,
+from which the library derives the GUI behavior.
+This library features a \gls{dsl} for defining constraint systems.
+The \gls{dsl} allows one to specify \emph{components}, \emph{constraints}, \emph{methods} 
+and \emph{variables}.
+A component in HotDrink holds a set of constraints and variables, as described in 
+section~\ref{sec:constraint-systems}. Variables often depend on each other,
+in that case it gets into a setting of multi-way dataflow.
+The HotDrink \gls{dsl} is implemented JavaScript tagged template literals
+\footnote{\href{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals}{Template literals}}, 
+which can be seen in Listing~\ref{HotDrinkDSL}. This lets the programmer integrate the 
+library with frontend JavaScript frameworks such as 
+React\footnote{For more information about the framework can be found at \href{https://reactjs.org/}{reactjs.org}} and 
+Svelte\footnote{For more information about the framework can be found at \href{https://svelte.dev/}{svelte.dev}}. 
+
+\begin{lstlisting}[caption={Example of the HotDrink \gls{dsl}},label=HotDrinkDSL, language=hotdrink]
+import { component } from 'hot-drink';
+
+const comp = component`
+    var f=1337, c;
+
+    constraint c1 {
+        m1(c -> f) => c * (9/5) + 32;
+        m2(f -> c) => (f -32) * 5/9;
+    }
+`;
+\end{lstlisting}
+
+Currently there are no integrated methods in HotDrink to bind the constraint system to 
+frontend frameworks. So the programmer have to decide on the best way to integrate the 
+HotDrink to the frontend web application. 
+Listings~\ref{HotDrinkBinding},~\ref{reactiveStatement},~\ref{onMountHotdrink} shows one 
+way of binding HotDrink with Svelte.
+
+\begin{lstlisting}[caption={Function for binding HotDrink and Svelte variable},label=HotDrinkBinding, language=javascript]
+function setHDValue<T>(HDvariable: Variable<T>, n: T) {
+    if (n !== HDvariable.value) { 
+        HDvariable.set(n);
+    };
+};
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Using the reactive statement, in Svelte~\cite{sveltedocs}, to update HotDrink corresopnding value, and trigger HotDrink to enforce the constraint system},label=reactiveStatement, language=javascript]
+$: {
+    setHDValue(HotDrinkValue, frontendValue);
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Using the onMount callback, in Svelte~\cite{sveltedocs}, to update the frontend value that correspont to the same value in HotDrink, when the HotDrink value changes.},label=onMountHotdrink, language=javascript]
+onMount(() => {
+    HotDrinkValue.subscribeValue((value: number) => frontendValue = value);
+});
+\end{lstlisting}

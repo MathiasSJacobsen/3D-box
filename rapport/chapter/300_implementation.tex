@@ -102,19 +102,6 @@ variable to the constraint system, see listing~\ref{hotdrinkprice}, and with it 
 Posten uses the following pricing 
 model~\cite{postenNorgespakken}\footnote{If any of the measures --- height, depth, width --- of the package is larger than the maximum allowed there is a special package fee of 149 kr.} 
 for domestic packages:
-\begin{table}[h]
-    \centering
-    \caption{Pricing model for domestic packages from Posten}
-    \label{pricingmodel}
-    \begin{tabular}{|l|cl|}
-    \hline
-             & \multicolumn{1}{l|}{\textless 35 x 25 x 12 cm} & \textless 120 x 60 x 60 cm  \\ \hline
-    0-5 kg   & \multicolumn{1}{c|}{70 kr}                     & \multicolumn{1}{c|}{129 kr} \\ \hline
-    0-10 kg  & \multicolumn{2}{c|}{129 kr}                                                  \\ \hline
-    10-25 kg & \multicolumn{2}{c|}{229 kr}                                                  \\ \hline
-    25-35 kg & \multicolumn{2}{c|}{299 kr}                                                  \\ \hline
-    \end{tabular}
-\end{table}
 
 \begin{lstlisting}[caption={HotDrink logic for determining the price},label=hotdrinkprice, language=hotdrink]
 constraint price {
@@ -153,6 +140,20 @@ constraint price {
     }
 }
 \end{lstlisting}
+
+\begin{table}[h]
+    \centering
+    \caption{Pricing model for domestic packages from Posten}
+    \label{pricingmodel}
+    \begin{tabular}{|l|cl|}
+    \hline
+             & \multicolumn{1}{l|}{\textless 35 x 25 x 12 cm} & \textless 120 x 60 x 60 cm  \\ \hline
+    0-5 kg   & \multicolumn{1}{c|}{70 kr}                     & \multicolumn{1}{c|}{129 kr} \\ \hline
+    0-10 kg  & \multicolumn{2}{c|}{129 kr}                                                  \\ \hline
+    10-25 kg & \multicolumn{2}{c|}{229 kr}                                                  \\ \hline
+    25-35 kg & \multicolumn{2}{c|}{299 kr}                                                  \\ \hline
+    \end{tabular}
+\end{table}
 
 \section{Current state of HotDrink}
 

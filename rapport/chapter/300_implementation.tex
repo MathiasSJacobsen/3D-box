@@ -153,3 +153,48 @@ constraint price {
     }
 }
 \end{lstlisting}
+
+\section{Current state of HotDrink}
+
+As mentioned in section \ref{sec:hotdrink} HotDrink is a JavaScript-based library for
+multiway dataflow constraint systems in \gls{gui}s. In the current sate of the library 
+there is no easy documentation for the library. There are two ways writing HotDrink, 
+the developer can either access the HotDrink \gls{api} seen in listing~\ref{hotdrinkapi} 
+or the developer can use the HotDrink \gls{dsl} seen in listing~\ref{HotDrinkDSL}. Both 
+with there own disadvantages.
+
+Using the \gls{api} can easily lead to errors and is not recommended. On line 9 and 10 
+of listing~\ref{hotdrinkapi} the developer have to specify the index of the 
+input-variables and the output-variables. In the example there are only two variables 
+--- \texttt{c} and \texttt{f} --- thus it is not complicated to keep track of the index 
+for the variables. However, if there are more variables it becomes cumbersome to keep 
+track of all the indexes and there corresponding to the variable.
+
+Using the \gls{dsl} is the most used way to write HotDrink code. This is also easier to 
+understand and more compact then the \gls{api}, as seen in the listing~\ref{HotDrinkDSL} 
+and \ref{hotdrinkapi} where both have the \textit{celsius to fahrenheit} example. In 
+this project we used the HotDrink \gls{dsl}. The use of the tagged template literals, as 
+discussed in section~\ref{sec:hotdrink}, makes it error prone to implement the \gls{dsl} 
+for the developer. This together with the fact that the error messages from HotDrink when 
+using the \gls{dsl} are not helpful to the developer. There are no way of differentiating 
+between a missing semi-colon or a missing closing bracket. They are generic error 
+stacks. 
+
+\begin{lstlisting}[caption={Example of how to use the HotDrink \gls{api} to simulate the corranltion between fahrenheit and celsius},label=hotdrinkapi, language=JavaScript]
+import { Component, Method, ConstraintSpec, MaskNone } from 'hotdrink';
+
+// create a component and emplace some variables
+export const Temp = new Component("Temp");
+const c = Temp.emplaceVariable("c", 1337);
+const f = Temp.emplaceVariable("f");
+
+// create a constraint spec
+const toFahrenheit = new Method(2, [0], [1], [MaskNone], (c) => (c * 9 / 5 + 32));
+const toCelsius = new Method(2, [1], [0], [MaskNone], (f) => (f - 32) * 5 / 9);
+
+const graderSpec = new ConstraintSpec([toFahrenheit, toCelsius]);
+
+// emplace a constraint built from the constraint spec
+const grader = Temp.emplaceConstraint("grader", graderSpec, [c, f]);
+\end{lstlisting}
+

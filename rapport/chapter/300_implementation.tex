@@ -156,13 +156,16 @@ constraint price {
 \end{table}
 
 \section{Current state of HotDrink}
+\label{sec:currentstate}
 
 As mentioned in section \ref{sec:hotdrink} HotDrink is a JavaScript-based library for
 multiway dataflow constraint systems in \gls{gui}s. In the current sate of the library 
 there is no easy documentation for the library. There are two ways writing HotDrink, 
 the developer can either access the HotDrink \gls{api} seen in listing~\ref{hotdrinkapi} 
 or the developer can use the HotDrink \gls{dsl} seen in listing~\ref{HotDrinkDSL}. Both 
-with there own disadvantages.
+with there own disadvantages. Currently, HotDrink does not have a dedicated tool 
+support --- i.e. \gls{ide} --- which would provide \gls{dsl}-level syntax highlighting, 
+code validation, refactoring and debugging.
 
 Using the \gls{api} can easily lead to errors and is not recommended. On line 9 and 10 
 of listing~\ref{hotdrinkapi} the developer have to specify the index of the 
@@ -203,3 +206,17 @@ const graderSpec = new ConstraintSpec([toFahrenheit, toCelsius]);
 const grader = Temp.emplaceConstraint("grader", graderSpec, [c, f]);
 \end{lstlisting}
 
+\section{Current work on HotDrink}
+We are currently developing tool support for HotDrink. The development tool is intended 
+to be a implementation of the HotDrink \gls{dsl} as a plugin for Visual Studio Code. 
+This plugin should support \gls{ide} features mentioned in section~\ref{sec:currentstate}. 
+We intend to pay a special attention to implementing the debugger functionality, such as 
+the dataflow in a constraint system. We also intend to look at various views and 
+visualization of running constraint systems solver, such as: 
+\begin{itemize}
+    \item showing the current variable values in the constraint system;
+    \item showing the current dataflow, with which we mean to highlight which method in the dataflow is currently being executed;
+    \item showing the history of previous dataflows;
+    \item showing the generation graph, to visualize the entire history of values and how certain values have been used to compute new values;
+    \item showing whether the constraints are active or not.
+\end{itemize}

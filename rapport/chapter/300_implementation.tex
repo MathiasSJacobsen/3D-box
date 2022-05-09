@@ -168,16 +168,20 @@ Using the \gls{api} can easily lead to errors and is not recommended. On line 9 
 of listing~\ref{hotdrinkapi} the developer have to specify the index of the 
 input-variables and the output-variables. In the example there are only two variables 
 --- \texttt{c} and \texttt{f} --- thus it is not complicated to keep track of the index 
-for the variables. However, if there are more variables it becomes cumbersome to keep 
-track of all the indexes and there corresponding to the variable.
+for the variables. In lager systems, it is easy to get lost in all the variables and 
+there indexes.
 
 Using the \gls{dsl} is the most used way to write HotDrink code. This is also easier to 
 understand and more compact then the \gls{api}, as seen in the listing~\ref{HotDrinkDSL} 
-and \ref{hotdrinkapi} where both have the \textit{celsius to fahrenheit} example. In 
+and \ref{hotdrinkapi} where both have the same \textit{celsius to fahrenheit} example. In 
 this project we used the HotDrink \gls{dsl}. The use of the tagged template literals, as 
-discussed in section~\ref{sec:hotdrink}, makes it error prone to implement the \gls{dsl} 
-for the developer. This together with the fact that the error messages from HotDrink when 
-using the \gls{dsl} are not helpful to the developer. There are no way of differentiating 
+discussed in section~\ref{sec:hotdrink}, makes the programming process error-prone. 
+Finding and fixing code errors becomes a significantly difficult process. In systems 
+larger then the celsius to fahrenheit, it is easy to get lost in all the constraints, 
+not knowing which variables are affected by other constraints. This may lead to a 
+non-desirable behavior.
+This together with the fact that the error messages from HotDrink when using 
+the \gls{dsl} are not helpful to the developer. There are no way of differentiating 
 between a missing semi-colon or a missing closing bracket. They are generic error 
 stacks. 
 

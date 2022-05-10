@@ -4,16 +4,16 @@ in this chapter…
 \section{Current state of HotDrink}
 \label{sec:currentstate}
 
-As mentioned in section \ref{sec:hotdrink} HotDrink is a JavaScript-based library for
+As mentioned in section \ref{sec:hotdrink}, HotDrink is a JavaScript-based library for
 multiway dataflow constraint systems in \gls{gui}s. In the current sate of the library 
-there is no easy documentation for the library. There are two ways writing HotDrink, 
-the developer can either access the HotDrink \gls{api} seen in listing~\ref{hotdrinkapi} 
+there is no easy documentation for the library. There are two ways writing HotDrink. 
+The developer can either access the HotDrink \gls{api} seen in listing~\ref{hotdrinkapi}, 
 or the developer can use the HotDrink \gls{dsl} seen in listing~\ref{HotDrinkDSL}. Both 
-with there own disadvantages. Currently, HotDrink does not have a dedicated tool 
-support --- i.e. \gls{ide} --- which would provide \gls{dsl}-level syntax highlighting, 
-code validation, refactoring and debugging.
+with there own disadvantages. 
 
-Using the \gls{api} can easily lead to errors and is not recommended. On line 9 and 10 
+Currently, HotDrink does not have a dedicated tool support --- i.e. \gls{ide} --- which 
+would provide \gls{dsl}-level syntax highlighting, code validation, refactoring and 
+debugging. Using the \gls{api} can easily lead to errors and is not recommended. On line 9 and 10 
 of listing~\ref{hotdrinkapi} the developer have to specify the index of the 
 input-variables and the output-variables. In the example there are only two variables 
 --- \texttt{c} and \texttt{f} --- thus it is not complicated to keep track of the index 
@@ -21,8 +21,8 @@ for the variables. In lager systems, it is easy to get lost in all the variables
 there indexes.
 
 Using the \gls{dsl} is the most used way to write HotDrink code. This is also easier to 
-understand and more compact then the \gls{api}, as seen in the listing~\ref{HotDrinkDSL} 
-and \ref{hotdrinkapi} where both have the same \textit{celsius to fahrenheit} example. In 
+understand and more compact code then the \gls{api}, as seen in the listing~\ref{HotDrinkDSL} 
+and \ref{hotdrinkapi}. Her both have the same \textit{celsius to fahrenheit} example. In 
 this project we used the HotDrink \gls{dsl}. The use of the tagged template literals, as 
 discussed in section~\ref{sec:hotdrink}, makes the programming process error-prone. 
 Finding and fixing code errors becomes a significantly difficult process. In systems 
@@ -31,8 +31,8 @@ not knowing which variables are affected by other constraints. This may lead to 
 non-desirable behavior.
 This together with the fact that the error messages from HotDrink when using 
 the \gls{dsl} are not helpful to the developer. There are no way of differentiating 
-between a missing semi-colon or a missing closing bracket. They are generic error 
-stacks. 
+between a missing semi-colon or a missing closing bracket. The error messages are 
+generic error stacks. 
 
 \begin{lstlisting}[caption={Example of how to use the HotDrink \gls{api} to simulate the corranltion between fahrenheit and celsius},label=hotdrinkapi, language=JavaScript]
 import { Component, Method, ConstraintSpec, MaskNone } from 'hotdrink';

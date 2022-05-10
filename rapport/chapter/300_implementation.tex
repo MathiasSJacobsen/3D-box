@@ -7,15 +7,16 @@ In this chapter…
 In the early stages of implementation the idea for the application was to learn how 
 to use the constraint system library HotDrink in a web application. Thus the 
 application in mind was a simple \gls{gui} for a box in 3D. Her we wanted to have few 
-constraints and keep the complexity low. 
+constraints and keep the complexity of the constraints low. 
 
-The box had three dimensions: \textit{depth}, \textit{width} and \textit{height}. From 
-these three values we calculate the value for the \textit{volume} of the box. See 
-\texttt{calculateVolume} method in listing~\ref{metricsConstraint}. 
-\texttt{calculateHeight}, \texttt{calculateDepth}, \texttt{calculateWidth} methods 
-calculate the values for \texttt{height}, \texttt{depth} and \texttt{width} individually, 
-whenever the value of \texttt{volume} is updated. Then HotDrink chooses the value lowest on the 
-priority list, which is the one that was updated last.
+In the first iteration of the project the box had three dimensions: \textit{depth}, 
+\textit{width} and \textit{height}. From these three values we calculate the value 
+for the \textit{volume} of the box. See \texttt{calculateVolume} method in 
+listing~\ref{metricsConstraint}. \texttt{calculateHeight}, \texttt{calculateDepth}, 
+\texttt{calculateWidth} methods calculate the values for \texttt{height}, 
+\texttt{depth} and \texttt{width} individually, whenever the value of \texttt{volume} 
+is updated. Then HotDrink checks the \textit{priority list}, and chooses the one that 
+was updated last.
 
 \begin{lstlisting}[caption={Example of the constraint calculating the values of the box},label=metricsConstraint, language=hotdrink]
 var width=1, depth=1, height=1, volume;
@@ -28,18 +29,28 @@ constraint metrics {
 }
 \end{lstlisting}
 
-HotDrink previously been tested out with React. Thus we decided to test it on Svelte. 
+HotDrink previously been used with React, too some success. Thus we decided to test it 
+on Svelte. 
 From listings~\ref{HotDrinkBinding},~\ref{reactiveStatement},~\ref{onMountHotdrink} 
 as seen in section~\ref{sec:hotdrink} we can see how to bind HotDrink to Svelte. This 
 becomes discombobulating when more values are added. Thus when we add one variable in 
-HotDrink we have to make the same corresponding variable in Svelte. Then we have to 
-bind the HotDrink variable to update the Svelte variable when HotDrink enforces 
-constraints (listing~\ref{onMountHotdrink}). Use the Svelte reactive statement to 
-listen to changes in the Svelte variable (listing \ref{reactiveStatement}) and call 
-the \texttt{setHDValue} (\ref{HotDrinkBinding}) on when it is updated.
+HotDrink, we have to make the same corresponding variable in Svelte. Then we have to 
+bind these two variables together. This is done in three steps. 
+
+First we use the 
+\texttt{onMount}-function in Svelte, to make the Svelte variable subscribe to the HotDrink 
+variable using the \texttt{subscribeValue}-function. See listing~\ref{onMountHotdrink}. 
+This makes it that when HotDrink enforces the constraint the Svelte variable is updated. 
+The \texttt{onMount}-function is used to make sure the subscribe only happens one time, 
+after the component is mounted. Now the changes propagates one way from HotDrink to Svelte. 
+Thus changes from Svelte to HotDrink also needs to be propagated. For this to happen we 
+use the \textit{reactive statement} in Svelte. See listing~\ref{reactiveStatement}. The 
+reactive statement then call the function \texttt{setHDValue}, seen in 
+listing~\ref{HotDrinkBinding}. This makes it so when a variable is updated in the \gls{gui}, 
+the corresponding variable in HotDrink is updated.
 
 \section{ThreeJS}
-We decided that it would be good for the end user to see the box in 3D. Thus we 
+We decided that it would be a good idea for the end user to see the box in 3D. Thus we 
 decided on adding a 3D library to the application. We ended up using 
 SveltThree~\cite{sveltthree} which is a component library for Svelte for using 
 ThreeJS~\cite{threejs}. 
@@ -93,15 +104,16 @@ make the object feel more natural, in the application we use two types of lights
 \end{lstlisting}
 
 \section{Posten}
-The Norwegian post-service packages domesticity and internationally from Norway. 
-A package can in many cases be seen as a box. We decided to make a web application 
+The Norwegian post-service handles packages domesticity and internationally from 
+and to Norway. 
+A package can in many cases be seen as a box. Thus we decided to make a web application 
 that would give you the price for sending a package with Posten. To still keep the 
 application simple we decided to only support packages sent domesticity. Posten 
 measures the height, depth, width and weight of the package. Thus we had to add a new 
-variable to the constraint system, see listing~\ref{hotdrinkprice}, and with it the logic for calculating the price. 
-Posten uses the following pricing 
+variable to the constraint system --- \texttt{weight} --- see listing~\ref{hotdrinkprice}. 
+With it, the logic for calculating the price. Posten uses the price
 model~\cite{postenNorgespakken}\footnote{If any of the measures --- height, depth, width --- of the package is larger than the maximum allowed there is a special package fee of 149 kr.} 
-for domestic packages:
+seen in table~\ref{pricingmodel}for domestic packages.
 
 \begin{lstlisting}[caption={HotDrink logic for determining the price},label=hotdrinkprice, language=hotdrink]
 constraint price {

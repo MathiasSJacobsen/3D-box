@@ -4,7 +4,7 @@ In this chapter…
 Svelte is a JavaScript framework used for building user interfaces, just like React, 
 Angular, Vue. Where some of these frameworks bulk there work in the browser, Svelte 
 shifts that work onto a compile step~\cite{sveltewebsite}. Svelte is written using 
-TypeScript. Instead of using virtual \gls{dom} svelte uses build time to covert the 
+TypeScript. Instead of using virtual \gls{dom} Svelte uses build time to covert the 
 code into JavaScript~\cite{sveltedocs}.
 
 \section{Constraint systems}
@@ -23,7 +23,7 @@ $R$ as inputs, such that the relation $R$ is satisfied~\cite{AlgorithmsForUserIn
 \label{sec:hotdrink}
 
 In this project I used the multiway dataflow constraint system library 
-HotDrink~\cite{HotDrink}, witch is a JavaScript-based library for multiway dataflow 
+HotDrink~\cite{HotDrink}, which is a JavaScript-based library for multiway dataflow 
 constraint systems in \gls{gui}s. Instead of writing explicit event handlers,
 the programmer writes declarative specification of data dependencies,
 from which the library derives the GUI behavior.
@@ -54,8 +54,8 @@ const comp = component`
 \end{lstlisting}
 
 Currently there are no integrated methods in HotDrink to bind the constraint system to 
-frontend frameworks. So the programmer have to decide on the best way to integrate the 
-HotDrink to the frontend web application. 
+frontend frameworks. The programmer have to decide on the best way to integrate the 
+HotDrink to the frontend web application of there choosing. 
 Listings~\ref{HotDrinkBinding},~\ref{reactiveStatement},~\ref{onMountHotdrink} shows one 
 way of binding HotDrink with Svelte.
 

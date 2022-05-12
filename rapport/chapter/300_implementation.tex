@@ -112,7 +112,7 @@ application simple we decided to only support packages sent domesticity. Posten
 measures the height, depth, width and weight of the package. Thus we had to add a new 
 variable to the constraint system --- \texttt{weight} --- see listing~\ref{hotdrinkprice}. 
 With it, the logic for calculating the price. Posten uses the price
-model~\cite{postenNorgespakken}\footnote{If any of the measures --- height, depth, width --- of the package is larger than the maximum allowed there is a special package fee of 149 kr.} 
+model~\cite{postenNorgespakken}\footnote{If any of the measures --- height, depth, width --- of the package is larger than the maximum allowed there is a special package fee of 149 NOK.} 
 seen in table~\ref{pricingmodel}for domestic packages.
 
 \begin{lstlisting}[caption={HotDrink logic for determining the price},label=hotdrinkprice, language=hotdrink]
@@ -159,11 +159,11 @@ constraint price {
     \label{pricingmodel}
     \begin{tabular}{|l|cl|}
     \hline
-             & \multicolumn{1}{l|}{\textless 35 x 25 x 12 cm} & \textless 120 x 60 x 60 cm  \\ \hline
-    0-5 kg   & \multicolumn{1}{c|}{70 kr}                     & \multicolumn{1}{c|}{129 kr} \\ \hline
-    0-10 kg  & \multicolumn{2}{c|}{129 kr}                                                  \\ \hline
-    10-25 kg & \multicolumn{2}{c|}{229 kr}                                                  \\ \hline
-    25-35 kg & \multicolumn{2}{c|}{299 kr}                                                  \\ \hline
+             & \multicolumn{1}{l|}{\textless 35 x 25 x 12 cm} & \textless 120 x 60 x 60 cm    \\ \hline
+    0-5 kg   & \multicolumn{1}{c|}{70 NOK}                     & \multicolumn{1}{c|}{129 NOK} \\ \hline
+    0-10 kg  & \multicolumn{2}{c|}{129 NOK}                                                   \\ \hline
+    10-25 kg & \multicolumn{2}{c|}{229 NOK}                                                   \\ \hline
+    25-35 kg & \multicolumn{2}{c|}{299 NOK}                                                   \\ \hline
     \end{tabular}
 \end{table}
 

@@ -1,10 +1,7 @@
 \chapter{Introduction}
 
-This report is part of INF319 project at the \gls{uib}. The goal of the project was to
-understand event-based \gls{gui} programming and the limitation to such programming.
-Specify dataflow constraints and understand how they connect to \gls{gui} widgets.
-Understand the possibilities and limitations of constraint systems based on \gls{gui}s.
-The multiway dataflow constraint system used in the development of this project is
-HotDrink. Before developing this project I had no prior experience with the constraint 
-system HotDrink. 
+This report is part of INF319 project at the \gls{uib}. The goal of the project was to understand event-based \gls{gui} programming and the limitation to such programming. Specify dataflow constraints and understand how they connect to \gls{gui} widgets. Understand the possibilities and limitations of constraint systems based on \gls{gui}s. The multiway dataflow constraint system used in the development of this project is HotDrink. Before developing this project I had no prior experience with the constraint system HotDrink. 
 \\TODO: Skriv hva rapporten inneholder.
+
+
+\gls{gui} are everywhere and are important for end users. \gls{gui}s connect users to software, and often are perceived as \emph{software}. \gls{gui}s often have input fields of various kinds, such as text boxes, checkboxes, drop-down lists, and so on. All of these different types of input fields oftentimes lead to complex dependencies between the fields. Consider an example of a graphical editing software, such as Adobe Illustrator\footnote{\url{https://www.adobe.com/no/products/illustrator.html}}. There, a user can manipulate the following values: absolute height, absolute width, relative height, relative width, each represented by a text box, and a Boolean indicator whether the ratio must be preserved. A change to any of these input fields must result in corresponding changes of other fields: indeed, for instance if the Boolean indicator is set to true, any changes to the width or height fields will be reflected to opposite field.

@@ -1,0 +1,106 @@
+\chapter{Multi-way dataflow constraint system}
+\label{chap:constraint-systems}
+
+A constraint system is seen as a tuple ${\langle V, C \rangle}$, where $V$ is a set of \textit{variables} and $C$ a set of \textit{constraints}~\cite{jarvi_algorithms_2009}. Each variable in $V$ has an associated value of a given type (string, integer, boolean, object, etc.). Each constraint in $C$ is a tuple ${\langle R, r, M \rangle}$. The variables involved in the constraint is given by ${R \subseteq V}$, $r$ is some \textit{n}-ary relation among variables in $R$, where ${n = \lvert R \rvert}$. $M$ is a set of non-empty set of \textit{constraint system methods}. Executing any method $m$ in $M$ enforces the constraint by computing values for some subset og $R$, using another disjoint subset of $R$ as inputs, such that the relation $R$ is satisfied.
+
+
+
+\section{HotDrink}
+\label{sec:hotdrink}
+
+In this project we used the multiway dataflow constraint system library 
+HotDrink~\cite{HotDrink}, which is a JavaScript-based library for multiway dataflow constraint systems in \gls{gui}s. Instead of writing explicit event handlers, the programmer writes declarative specification of data dependencies, from which the library derives the GUI behavior.
+
+This library features a \gls{dsl} for defining constraint systems.
+The \gls{dsl} allows one to specify \emph{components}, \emph{constraints}, \emph{methods} 
+and \emph{variables}.
+In HotDrink, a component is a collection of variables and constraints that forms an independent constraint system~\cite{svartveit2021multithreaded}. 
+
+Variables often depend on each other,
+in that case it gets into a setting of multi-way dataflow.
+The HotDrink \gls{dsl} is implemented JavaScript tagged template literals
+\footnote{\href{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals}{Template literals}}, 
+which can be seen in Listing~\ref{HotDrinkDSL}. This lets the programmer integrate the 
+library with frontend JavaScript frameworks such as 
+React\footnote{\url{https://reactjs.org/}} and Svelte\footnote{\url{https://svelte.dev/}}. 
+
+\begin{lstlisting}[caption={Example of the HotDrink \gls{dsl}},label=HotDrinkDSL, language=hotdrink]
+import { component } from 'hot-drink';
+
+const comp = component`
+    var f=1337, c;
+
+    constraint c1 {
+        m1(c -> f) => c * (9/5) + 32;
+        m2(f -> c) => (f -32) * 5/9;
+    }
+`;
+\end{lstlisting}
+
+Currently there are no integrated methods in HotDrink to bind the constraint system to 
+frontend frameworks. The programmer have to decide on the best way to integrate the 
+HotDrink to the frontend web application of there choosing. 
+Listings~\ref{HotDrinkBinding},~\ref{reactiveStatement},~\ref{onMountHotdrink} shows one 
+way of binding HotDrink with Svelte.
+
+\begin{lstlisting}[caption={Function for binding HotDrink and Svelte variable},label=HotDrinkBinding, language=javascript]
+function setHDValue<T>(HDvariable: Variable<T>, n: T) {
+    if (n !== HDvariable.value) { 
+        HDvariable.set(n);
+    };
+};
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Using the reactive statement, in Svelte~\cite{sveltedocs}, to update HotDrink corresopnding value, and trigger HotDrink to enforce the constraint system},label=reactiveStatement, language=javascript]
+$: {
+    setHDValue(HotDrinkValue, frontendValue);
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Using the onMount callback, in Svelte~\cite{sveltedocs}, to update the frontend value that correspont to the same value in HotDrink, when the HotDrink value changes.},label=onMountHotdrink, language=javascript]
+onMount(() => {
+    HotDrinkValue.subscribeValue((value: number) => frontendValue = value);
+});
+\end{lstlisting}
+
+In the current sate of the library there is no easy documentation for the library. There are two ways writing HotDrink. The developer can either access the HotDrink \gls{api} seen in listing~\ref{hotdrinkapi}, or the developer can use the HotDrink \gls{dsl} seen in listing~\ref{HotDrinkDSL}. Both with there own disadvantages. 
+
+Currently, HotDrink does not have a dedicated tool support --- i.e. \gls{ide} --- which 
+would provide \gls{dsl}-level syntax highlighting, code validation, refactoring and 
+debugging. Using the \gls{api} can easily lead to errors and is not recommended. On line 9 and 10 of listing~\ref{hotdrinkapi} the developer have to specify the index of the 
+input-variables and the output-variables. In the example there are only two variables 
+--- \texttt{c} and \texttt{f} --- thus it is not complicated to keep track of the index 
+for the variables. In lager systems, it is easy to get lost in all the variables and 
+there indexes.
+
+Using the \gls{dsl} is the most used way to write HotDrink code. This is also easier to 
+understand and more compact code then the \gls{api}, as seen in the listing~\ref{HotDrinkDSL} 
+and \ref{hotdrinkapi}. Her both have the same \textit{celsius to fahrenheit} example. In 
+this project we used the HotDrink \gls{dsl}. The use of the tagged template literals, as 
+discussed, makes the programming process error-prone. 
+Finding and fixing code errors becomes a significantly difficult process. In systems 
+larger then the celsius to fahrenheit, it is easy to get lost in all the constraints, 
+not knowing which variables are affected by other constraints etc. This may lead to a 
+non-desirable behavior in the system.
+This together with the fact that the error messages from HotDrink when using 
+the \gls{dsl} are not helpful to the developer. There are no way of differentiating 
+between a missing semi-colon or a missing closing bracket. The error messages are 
+generic error stacks. 
+
+\begin{lstlisting}[caption={Example of how to use the HotDrink \gls{api} to simulate the relationship between fahrenheit and celsius},label=hotdrinkapi, language=JavaScript]
+import { Component, Method, ConstraintSpec, MaskNone } from 'hotdrink';
+
+// create a component and emplace some variables
+export const Temp = new Component("Temp");
+const c = Temp.emplaceVariable("c", 1337);
+const f = Temp.emplaceVariable("f");
+
+// create a constraint spec
+const toFahrenheit = new Method(2, [0], [1], [MaskNone], (c) => (c * 9 / 5 + 32));
+const toCelsius = new Method(2, [1], [0], [MaskNone], (f) => (f - 32) * 5 / 9);
+
+const graderSpec = new ConstraintSpec([toFahrenheit, toCelsius]);
+
+// emplace a constraint built from the constraint spec
+const grader = Temp.emplaceConstraint("grader", graderSpec, [c, f]);
+\end{lstlisting}

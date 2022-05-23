@@ -1,0 +1,21 @@
+\chapter{Discussion}
+
+
+\section{Current work on HotDrink}
+We are currently developing tool support for HotDrink. The development tool is intended 
+to be a implementation of the HotDrink \gls{dsl} as a plugin for Visual Studio Code. 
+This plugin should support \gls{ide} features mentioned in section~\ref{sec:currentstate}. 
+We intend to pay a special attention to implementing the debugger functionality, such as 
+the dataflow in a constraint system. We also intend to look at various views and 
+visualization of running constraint systems solver, such as: 
+\begin{itemize}
+    \item showing the current variable values in the constraint system;
+    \item showing the current dataflow, with which we mean to highlight which method in the dataflow is currently being executed;
+    \item showing the history of previous dataflows;
+    \item showing the generation graph, to visualize the entire history of values and how certain values have been used to compute new values;
+    \item showing whether the constraints are active or not.
+\end{itemize}
+
+We use the language workbench \textbf{Eclipse Xtext}~\cite{eysholdt_xtext:_2010} / 
+\textbf{Langium} to implement the \gls{dsl}. From this \gls{dsl} we get syntax 
+highlighted \textit{keywords}, and also autocompletion of these keywords, as seen in figure~\ref{trenger bilde}. 

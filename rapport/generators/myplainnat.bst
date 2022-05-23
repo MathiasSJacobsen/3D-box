@@ -61,6 +61,7 @@ ENTRY
     key
     month
     note
+    abstract
     number
     organization
     pages
@@ -70,6 +71,7 @@ ENTRY
     title
     type
     url
+    urldate
     volume
     year
   }
@@ -289,6 +291,13 @@ FUNCTION {format.url}
   if$
 }
 
+FUNCTION {format.urldate}
+{ urldate empty$
+    { "" }
+    { new.block "\verb|[|Accessed on \textit{" urldate * "}\verb|]|" * }
+  if$
+}
+
 FUNCTION {format.doi}
 { doi empty$
     { "" }
@@ -416,8 +425,7 @@ FUNCTION {n.dashify}
 
 FUNCTION {format.date}
 { year duplicate$ empty$
-    { "empty year in " cite$ * warning$
-       pop$ "" }
+    {  pop$ "" }
     'skip$
   if$
   month empty$
@@ -723,6 +731,8 @@ FUNCTION {article}
   format.url output
   new.block
   note output
+  abstract output
+  format.urldate output
   fin.entry
 }
 
@@ -932,11 +942,13 @@ FUNCTION {misc}
   format.title output
   howpublished new.block.checka
   howpublished output
-  format.date output
+  %format.date output
   format.issn output
   format.url output
+  format.urldate output
   new.block
   note output
+  abstract output
   fin.entry
   empty.misc.check
 }
@@ -1248,9 +1260,7 @@ FUNCTION {sort.format.title}
 FUNCTION {author.sort}
 { author empty$
     { key empty$
-        { "to sort, need author or key in " cite$ * warning$
-          ""
-        }
+        { "" }
         { key sortify }
       if$
     }

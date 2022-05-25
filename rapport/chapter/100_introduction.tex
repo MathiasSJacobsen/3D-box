@@ -8,23 +8,20 @@
 
 \gls{gui} are everywhere and are important for end users. \gls{gui}s connect users to software, and often are perceived as \emph{software}. \gls{gui}s often have input fields of various kinds, such as text boxes, checkboxes, drop-down lists, and so on. All of these different types of input fields oftentimes lead to complex dependencies between the fields and \textit{event handlers}. An event is an action that takes place when the user interacts with the \gls{gui}. A handler is a callback that is executed when the event happens. Consider an example of a graphical editing software, such as Adobe Illustrator\footnote{\url{https://www.adobe.com/no/products/illustrator.html}}. The dependencies of such program are illustrated in \autoref{fig:adobeIll}. There, a user can manipulate the following values: absolute height, absolute width, relative height, relative width, each represented by a text box, and a Boolean indicator whether the ratio must be preserved. A change to any of these input fields must result in corresponding changes of other fields: indeed, for instance if the Boolean indicator is set to true, any changes to the width or height fields will be reflected to opposite field. 
 
-
-\gls{gui}s are often times wrong and buggy. 
-
 In \autoref{fig:vaccine}, you can se a simple \gls{gui} form within a questioner. The error message is displayed, although the date on the from is within the specified boundaries.
 
 \begin{figure}
     \centering
-    \includegraphics[scale=0.35]{figures/vaccine.jpeg}
+    \includegraphics[scale=0.35, frame]{figures/vaccine.jpeg}
     \caption{Example of a wrong validator}
     \label{fig:vaccine}
 \end{figure}
 
-The new system used by several universities in Norway, \gls{dfø}, has ambiguously formulated question throughout the application. These questions make the application difficult to use, and in certain circumstances, the user is unsure what to click on. One of these questions is presented in the \autoref{fig:DFO} --- however, it is unclear what will happen if either of the buttons is pressed.
+The new system used by several universities in Norway, made by \gls{dfø}, has ambiguously formulated question throughout the application. These questions make the application difficult to use, and in certain circumstances, the user is unsure what to click on. One of these questions is presented in the \autoref{fig:DFO} --- however, it is unclear what will happen if either of the buttons is pressed.
 
 \begin{figure}
     \centering
-    \includegraphics[scale=0.65]{figures/DFO.jpg}
+    \includegraphics[scale=0.55, frame]{figures/DFO.jpg}
     \caption{Example of an ambiguously formulated question}
     \label{fig:DFO}
 \end{figure}
@@ -33,7 +30,7 @@ There are generally a lot of dependencies between all the fields in \gls{gui}s w
 Another example of errors in forms is when the validation has a undesirable behavior. For instance, in a \gls{gui} with a form for writing down every travel abroad, such seen in \autoref{fig:enterfinland}. Due to incorrect validation, the user is unable to erase the first trip. Even though the details provided in the first trip, a validation error is shown, informing the user that the data is incorrect. Therefor, the user have to erase the the hole from, and start all over again.
 \begin{figure}
     \centering
-    \includegraphics[scale=0.2]{figures/PLDI.jpg}
+    \includegraphics[scale=0.2, frame]{figures/PLDI.jpg}
     \caption{Registration for a premier conference in programming languages}
     \label{fig:PLDI}
 \end{figure}
@@ -42,11 +39,9 @@ Another example of errors in forms is when the validation has a undesirable beha
 \begin{figure}
     \caption{System for applying for Finnish citizenship}
     \centering
-    \includegraphics[scale=0.55]{figures/enterfinland-ui-citizenship-cant-remove-first-trip.png}
+    \includegraphics[scale=0.35, frame]{figures/enterfinland-ui-citizenship-cant-remove-first-trip.png}
     \label{fig:enterfinland}
 \end{figure}
-
-
 
 \begin{figure}
     \centering
@@ -54,8 +49,17 @@ Another example of errors in forms is when the validation has a undesirable beha
     \caption{Finnish tax system}
 \end{figure}
 
+\begin{wrapfigure}{r}{7.1cm}
+    \centering
+    \includegraphics[width=7cm, frame]{figures/adobeIllCS.png}
+    \caption{Example of dependency graph with a constraint system}
+    \label{fig:adobeIllCS}
+\end{wrapfigure}
 
+As previously discussed, \gls{gui}s are usually buggy and incorrect, nearly to the point where users expect errors. In a relatively modest application, dataflow across fields becomes complicated for the programmer. The way \gls{gui}s are developed today, with imperative event handlers that are ran on every user interaction~\cite{all2021multi}, contributes to this. A single error in one of these event handlers might cause a chain of faults in other event handlers. Allowing a constraint system to impose dependencies is one solution. The constraint system handles the logic behind the dataflow, and the programmer is solely responsible for binding the values in the \gls{gui} to the corresponding value in the constraint system. The dependency graph is simplified by allowing the constraint system manage the dependencies --- \autoref{fig:adobeIllCS} is identical to \autoref{fig:adobeIll}, except with the use of a constraint system.
 
-This report is part of INF319 project at the \gls{uib}. The goal of the project was to understand event-based \gls{gui} programming and the limitation to such programming. Specify dataflow constraints and understand how they connect to \gls{gui} widgets. Understand the possibilities and limitations of constraint systems based on \gls{gui}s. The multiway dataflow constraint system used in the development of this project is HotDrink. Before developing this project I had no prior experience with the constraint system HotDrink. 
+The goal of the project was to understand event-based \gls{gui} programming and the limitation to such programming. Specify dataflow constraints and understand how they connect to \gls{gui} elements. Understand the possibilities and limitations of constraint systems based on \gls{gui}s. Finally, create an application with this in mind. The multiway dataflow constraint system used in the development of this project is HotDrink~\cite{HotDrink1}. Before developing this project I had no prior experience with the constraint system HotDrink.
 
-TODO: Skriv hva rapporten inneholder.
+For the later point, we have started the implementation of an \gls{ide} which is aware of the HotDrink language. This will be discussed in more detail in \autoref{chap:discussion}
+
+\textit{This report is part of INF319 project at the \gls{uib}.}

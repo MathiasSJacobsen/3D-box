@@ -1,6 +1,13 @@
 \chapter{Introduction}
 
-\gls{gui} are everywhere and are important for end users. \gls{gui}s connect users to software, and often are perceived as \emph{software}. \gls{gui}s often have input fields of various kinds, such as text boxes, checkboxes, drop-down lists, and so on. All of these different types of input fields oftentimes lead to complex dependencies between the fields. Consider an example of a graphical editing software, such as Adobe Illustrator\footnote{\url{https://www.adobe.com/no/products/illustrator.html}}. There, a user can manipulate the following values: absolute height, absolute width, relative height, relative width, each represented by a text box, and a Boolean indicator whether the ratio must be preserved. A change to any of these input fields must result in corresponding changes of other fields: indeed, for instance if the Boolean indicator is set to true, any changes to the width or height fields will be reflected to opposite field.
+\begin{wrapfigure}{r}{7.1cm}
+    \includegraphics[width=6.9cm, frame]{figures/adobeIll.png}
+    \caption{Dependencies between widgets and event handlers.}
+    \label{fig:adobeIll}
+\end{wrapfigure}
+
+\gls{gui} are everywhere and are important for end users. \gls{gui}s connect users to software, and often are perceived as \emph{software}. \gls{gui}s often have input fields of various kinds, such as text boxes, checkboxes, drop-down lists, and so on. All of these different types of input fields oftentimes lead to complex dependencies between the fields and \textit{event handlers}. An event is an action that takes place when the user interacts with the \gls{gui}. A handler is a callback that is executed when the event happens. Consider an example of a graphical editing software, such as Adobe Illustrator\footnote{\url{https://www.adobe.com/no/products/illustrator.html}}. The dependencies of such program are illustrated in \autoref{fig:adobeIll}. There, a user can manipulate the following values: absolute height, absolute width, relative height, relative width, each represented by a text box, and a Boolean indicator whether the ratio must be preserved. A change to any of these input fields must result in corresponding changes of other fields: indeed, for instance if the Boolean indicator is set to true, any changes to the width or height fields will be reflected to opposite field. 
+
 
 \gls{gui}s are often times wrong and buggy. 
 
@@ -23,7 +30,7 @@ The new system used by several universities in Norway, \gls{dfø}, has ambiguous
 \end{figure}
 
 There are generally a lot of dependencies between all the fields in \gls{gui}s with forms that the user must fill out. As a result, they are more prone to make errors. One example of this is forms that has mandatory fields, this frequently leads to mistakes in field dependencies. In a form with several phases, you may be instructed to complete all required information before the form allows you to go back a step. This was the case in the registration form for \gls{pldi} conference --- shown in \autoref{fig:PLDI}. The user had to complete all required fields in the current phase before the \gls{gui} enabled the user to return to earlier phases. 
-Another example of errors in forms is when the validation has a undesirable behavior. For instance, in a \gls{gui} with a form for writing down every travel abroad, such seen in \autoref{fig:enterfinland}. Due to incorrect validation, the user is unable to erase the first trip. Even though the details provided in the first trip, a validation error is shown, informing the user that the data is incorrect.
+Another example of errors in forms is when the validation has a undesirable behavior. For instance, in a \gls{gui} with a form for writing down every travel abroad, such seen in \autoref{fig:enterfinland}. Due to incorrect validation, the user is unable to erase the first trip. Even though the details provided in the first trip, a validation error is shown, informing the user that the data is incorrect. Therefor, the user have to erase the the hole from, and start all over again.
 \begin{figure}
     \centering
     \includegraphics[scale=0.2]{figures/PLDI.jpg}
@@ -40,6 +47,7 @@ Another example of errors in forms is when the validation has a undesirable beha
 \end{figure}
 
 
+
 \begin{figure}
     \centering
     \includegraphics[scale=0.45]{figures/finnishSkatteetaten.png}
@@ -47,5 +55,7 @@ Another example of errors in forms is when the validation has a undesirable beha
 \end{figure}
 
 
+
 This report is part of INF319 project at the \gls{uib}. The goal of the project was to understand event-based \gls{gui} programming and the limitation to such programming. Specify dataflow constraints and understand how they connect to \gls{gui} widgets. Understand the possibilities and limitations of constraint systems based on \gls{gui}s. The multiway dataflow constraint system used in the development of this project is HotDrink. Before developing this project I had no prior experience with the constraint system HotDrink. 
-\\TODO: Skriv hva rapporten inneholder.
+
+TODO: Skriv hva rapporten inneholder.

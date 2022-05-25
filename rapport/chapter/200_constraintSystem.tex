@@ -7,9 +7,7 @@ constraint satisfaction methods…
 
 A constraint is a maintainable relation between a sub-set of the component variables. It can, for instance, represent a equation such as  $E_k = \frac{1}{2}mv^2$~\cite{svartveit2021multithreaded}. When a variable changes the constraint system needs to be re-enforced.
 
-\begin{quote}
-    "The \textit{dataflow} of a program is a graph of variables, where directed edges between variables express flows of data, or dependencies between variables. More specially, if a variable $a$ is involved in the computation of a variable $b$, and $b$ must be updated whenever $a$ is updated, then $b$ is dependent on $a$; we say that data \textit{flows} from $a$ to $b$."~\cite{stokke2020declaratively}
-\end{quote}
+The programs \textit{dataflow} is a graph of variables, with directed edges between variables expressing data flow or variable dependencies~\cite{stokke2020declaratively}. If variable $a$ is used in the computation of a variable $b$, then $b$ must be updated whenever $a$ is changed, thus $b$ is said to be dependent on $a$, and vice versa.
 
 \section{HotDrink}
 \label{sec:hotdrink}

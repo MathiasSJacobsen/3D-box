@@ -1,7 +1,12 @@
 \chapter{Discussion}
 \label{chap:discussion}
 
+Graphical User Interfaces har difficult to implement correctly, and often lead to bugs and a cluster of dependencies. This has been the case for a long time, to the point where the user now expects \gls{gui}s to contain error. These issues are frequently caused by the fact that current \gls{gui} programmers manage all user interactions using event driven programming paradigms~\cite{HotDrink}. Due to the asynchronous nature of this approach, it is difficult to ensure that the same result is obtained from the same amount of sequences, but at different times. By letting the constraint system handle the coordinating asynchronous updates, we release the programmer from this error-prone task. The constraint system updates the \gls{gui}, even when some calculations fail, the resultant reactive program assures consistent outputs for any sequence of editing actions, despite the numerous conceivable interleaving of events and computations.
 
+I have discovered how a constraint system, like HotDrink, might be a useful alternative to event driven programming. Constraint systems make it easier to deal with significant changes in business logic, along with more readable code. I have implemented a parcel sending form for parcels sent by the Norwegian post-service domestically. Compared to Posten's own solution, our approach features; a field for the dimensions \textit{height, width, depth}, the \textit{weight} and \textit{volume} of the package and the \textit{price} for sending the package. As a extra feature the user are also able to see the package in the given dimensions in a 3D-view. The 3D-view also contains a tennis-ball, with a radius of 3.4, as a real life comparison object. A change in any of the dimensions, height, width or depth, will cause a change to the volume etc. 
+
+
+\newpage
 \section{Current work on HotDrink}
 We are currently developing tool support for HotDrink. The development tool is intended 
 to be a implementation of the HotDrink \gls{dsl} as a plugin for Visual Studio Code. 

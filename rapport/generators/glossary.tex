@@ -1,0 +1,19 @@
+%\makeglossaries      % alt 1
+\makenoidxglossaries  % alt 2
+
+\renewcommand*{\acronymname}{List of Acronyms and Abbreviations}
+\renewcommand{\glsnamefont}[1]{\textbf{#1}}
+
+%Create acronyms here.
+\newacronym{uib}{UiB}{University of Bergen}
+\newacronym{gui}{GUI}{Graphical User Interface}
+\newacronym{dsl}{DSL}{Domain Specific Language}
+\newacronym{dom}{DOM}{Document Object Model}
+\newacronym{api}{API}{Application Programming Interface}
+\newacronym{ide}{IDE}{Integrated Development Environment}
+\newacronym{dfø}{DFØ}{Direktoratet for forvaltning og økonomistyring}
+\newacronym{pldi}{PLDI}{Programming Languages Design and Implementation}
+
+%You can also do explanations.
+\newglossaryentry{git}{name={Git},
+    description={Git is a \gls{vcs} for tracking changes in computer files and coordinating work on those files among multiple people}}

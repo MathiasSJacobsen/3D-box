@@ -1,0 +1,37 @@
+%¤\RequirePackage{listings}
+
+\lstdefinelanguage{javascript}{
+  morekeywords=[1]{break, continue, delete, else, for, function, if, in,
+    new, return, const, import, this, typeof, var, void, while, with, onMount, $},
+  % Literals, primitive types, and reference types.
+  morekeywords=[2]{false, null, true, boolean, number, undefined,
+    Array, Boolean, Date, Math, Number, String, Object},
+  % Built-ins.
+  morekeywords=[3]{eval, parseInt, parseFloat, escape, unescape},
+  sensitive,
+  morecomment=[s]{/*}{*/},
+  morecomment=[l]//,
+  morecomment=[s]{/**}{*/}, % JavaDoc style comments
+  morestring=[b]',
+  morestring=[b]"
+}[keywords, comments, strings]
+\lstset{
+    frame=single,
+    basicstyle=\linespread{0.8}\footnotesize\ttfamily,
+    keywordstyle=[1]{\color{violet}},
+    keywordstyle=[2]{\color{orange}\bfseries},
+    keywordstyle=[3]{\color{red}\bfseries},
+    numbers=left,
+    numbersep=5pt,
+    showstringspaces=false, 
+    stringstyle=\color{codegreen},
+    commentstyle=\color{gray},
+    breakatwhitespace=true,
+    breaklines=true,
+    postbreak=\mbox{\textcolor{violet}{$\hookrightarrow$}\space},
+    tabsize=4,
+    fontadjust=true,
+    language=javascript,
+    escapeinside={//*}{\^^M},
+    %escapeinside={(@}{@)},
+}

@@ -1,0 +1,126 @@
+@inproceedings{HotDrink,
+author = {Foust, Gabriel and J\"{a}rvi, Jaakko and Parent, Sean},
+title = {Generating Reactive Programs for Graphical User Interfaces from Multi-Way Dataflow Constraint Systems},
+year = {2015},
+isbn = {9781450336871},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/2814204.2814207},
+doi = {10.1145/2814204.2814207},
+abstract = { For a GUI to remain responsive, it must be able to schedule lengthy tasks to be executed asynchronously. In the traditional approach to GUI implementation--writing functions to handle individual user events--asynchronous programming easily leads to defects. Ensuring that all data dependencies are respected is difficult when new events arrive while prior events are still being handled. Reactive programming techniques, gaining popularity in GUI programming, help since they make data dependencies explicit and enforce them automatically as variables' values change. However, data dependencies in GUIs usually change along with its state. Reactive programming must therefore describe a GUI as a collection of many reactive programs, whose interaction the programmer must explicitly coordinate. This paper presents a declarative approach for GUI programming that relieves the programmer from coordinating asynchronous computations. The approach is based on our prior work on "property models", where GUI state is maintained by a dataflow constraint system. A property model responds to user events by atomically constructing new data dependencies and scheduling asynchronous computations to enforce those dependencies. In essence, a property model dynamically generates a reactive program, adding to it as new events occur. The approach gives the following guarantee: the same sequence of events produces the same results, regardless of the timing of those events. },
+booktitle = {Proceedings of the 2015 ACM SIGPLAN International Conference on Generative Programming: Concepts and Experiences},
+pages = {121–130},
+numpages = {10},
+keywords = {Dataflow constraint systems, asynchronous programming, Graphical user interfaces},
+location = {Pittsburgh, PA, USA},
+series = {GPCE 2015}
+}
+
+@article{HotDrink1, 
+  author = {Freeman, John and J\"{a}rvi, Jaakko and Foust, Gabriel}, 
+  title = {HotDrink: A Library for Web User Interfaces}, 
+  year = {2012}, 
+  issue_date = {March 2013}, 
+  publisher = {Association for Computing Machinery}, 
+  address = {New York, NY, USA}, 
+  volume = {48}, 
+  number = {3}, 
+  issn = {0362-1340}, 
+  url = {https://doi.org/10.1145/2480361.2371413}, 
+  doi = {10.1145/2480361.2371413}, 
+  abstract = {HotDrink is a JavaScript library for constructing forms, dialogs, and other common user interfaces for Web applications. With HotDrink, instead of writing event handlers, developers declare a "view-model" in JavaScript and a set of "bindings" between the view-model and the HTML elements comprising the view. These specifications tend to be small, but they are enough for HotDrink to provide a fully operational GUI with multi-way dataflows, enabling/disabling of values, activation/deactivation of commands, and data validation. HotDrink implements these rich behaviors, expected of high-quality user interfaces, as generic reusable algorithms. This paper/tool demonstration introduces developers to the HotDrink library by stepping through the construction of an example web application GUI.The library is a concrete realization of our prior work on the "property models" approach to declarative GUI programming. To encourage adoption among developers, we have packaged the technology following established web programming conventions.}, 
+  journal = {SIGPLAN Not.}, 
+  month = {sep}, 
+  pages = {80-83}, 
+  numpages = {4}, 
+  keywords = {user interface, web, MVVM pattern, declarative programming} 
+}
+
+@inproceedings{jarvi_algorithms_2009,
+	address = {Denver, Colorado, USA},
+	title = {Algorithms for user interfaces},
+	isbn = {9781605584942},
+	url = {http://portal.acm.org/citation.cfm?doid=1621607.1621630},
+	doi = {10.1145/1621607.1621630},
+	language = {en},
+	urldate = {2022-05-23},
+	booktitle = {Proceedings of the eighth international conference on {Generative} programming and component engineering - {GPCE} '09},
+	publisher = {ACM Press},
+	author = {Järvi, Jaakko and Marcus, Mat and Parent, Sean and Freeman, John and Smith, Jacob},
+	year = {2009},
+	pages = {147},
+}
+
+@mastersthesis{stokke2020declaratively,
+  title={Declaratively Programming the Dynamic Structure of Graphical User Interfaces},
+  author={Stokke, Knut Anders},
+  year={2020},
+  school={The University of Bergen}
+}
+@inproceedings{all2021multi,
+  title={Multi-Way Dataflow Specifications in Graphical User Interfaces},
+  author={Stokke, Knut Anders and Barash, Mikhail and Barlinn, Karl Henrik Elg and Berge, Daniel and Schaathun, Torjus and Jaakko, J},
+  booktitle={Norsk IKT-konferanse for forskning og utdanning},
+  number={1},
+  pages={161--163},
+  year={2021}
+}
+@mastersthesis{svartveit2021multithreaded,
+  title={Multithreaded Multiway Constraint Systems with Rust and WebAssembly},
+  author={Svartveit, Rudi Blaha},
+  year={2021},
+  school={The University of Bergen}
+}
+
+@misc{postenNorgespakken,
+	title = {Sende brev og pakker - {Posten} {Norge}},
+	url = {https://sending.posten.no/bestill/pakke?_ga=2.21151167.568534240.1651753510-2089638552.1651753510},
+	abstract = {Send brev eller Norgespakke med Posten},
+	urldate = {2022-05-23},
+}
+
+@misc{sveltewebsite,
+	title = {Svelte • {Cybernetically} enhanced web apps},
+	url = {https://svelte.dev/},
+	language = {en},
+	urldate = {2022-05-23},
+}
+
+@misc{sveltedocs,
+	title = {Docs • {Svelte}},
+	url = {https://svelte.dev/docs},
+	language = {en},
+	urldate = {2022-05-05},
+}
+
+@misc{sveltthree,
+	title = {svelthree • {Svelte} powered three.js development},
+	url = {https://svelthree.dev},
+	abstract = {An open source Svelte components library for declarative construction of reactive and reusable Three.js scene graphs. Developed by Vatroslav Vrbanic.},
+	language = {en},
+	urldate = {2022-05-05},
+	journal = {svelthree.dev},
+}
+
+@misc{threejs,
+	title = {Three.js – {JavaScript} {3D} {Library}},
+	url = {https://threejs.org/},
+	language = {en},
+	urldate = {2022-05-23},
+}
+
+@inproceedings{eysholdt_xtext:_2010,
+	address = {Reno/Tahoe, Nevada, USA},
+	title = {Xtext: implement your language faster than the quick and dirty way},
+	isbn = {9781450302401},
+	shorttitle = {Xtext},
+	url = {http://portal.acm.org/citation.cfm?doid=1869542.1869625},
+	doi = {10.1145/1869542.1869625},
+	language = {en},
+	urldate = {2022-05-23},
+	booktitle = {Proceedings of the {ACM} international conference companion on {Object} oriented programming systems languages and applications companion - {SPLASH} '10},
+	publisher = {ACM Press},
+	author = {Eysholdt, Moritz and Behrens, Heiko},
+	year = {2010},
+	pages = {307},
+}

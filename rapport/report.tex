@@ -1,0 +1,46 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+
+\documentclass[12pt,oneside,final,a4paper]{report}
+\usepackage{generators/imports}
+\usepackage{generators/listings-hotdrink}
+\usepackage{generators/listings-javascript}
+
+\include{generators/glossary}
+\begin{document}
+\include{generators/frontpage} % This is the titlepage
+\include{generators/tableOfContentsAndListings}
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\setlength{\parskip}{0.5cm plus4mm minus3mm}  
+
+\glsresetall
+
+\include{chapter/100_introduction.tex}
+\include{chapter/200_constraintSystem.tex}
+\include{chapter/300_implementation.tex}
+\include{chapter/500_discussion.tex}
+
+% Include more chapters as required.
+%%=========================================
+
+% Alternative 1 of printing glossaries & acronymes
+%\renewcommand{\glossarypreamble}{\footnotesize}
+%\printglossary[style=super, type=\glsdefaulttype] \let\cleardoublepage\clearpage
+%\printglossary[style=super, type=\acronymtype]
+
+
+%Alternative 2
+%Simplified way of printing glossaries, slower than alt 1, but has better compatibility
+\printnoidxglossaries
+
+% Include more appendices as required.
+%%=========================================
+\clearpage
+\DeclareRobustCommand{\VAN}[3]{#3}
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliographystyle{generators/myplainnat}
+\bibliography{generators/refs}
+\end{document}

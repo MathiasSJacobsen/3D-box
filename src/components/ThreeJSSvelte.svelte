@@ -14,15 +14,16 @@
   import { depthS, heightS, widthS } from "../stores/metricStores";
   
   
-    let radiusFotball = 3
+    let radiusTennisball = 3.4
     let cubeGeometry = new BoxBufferGeometry($heightS, $widthS, $depthS);
     let cubeMaterial = new MeshStandardMaterial()
   
-    let sphereGeometry = new SphereBufferGeometry(radiusFotball, 64, 32)
+    let sphereGeometry = new SphereBufferGeometry(radiusTennisball, 64, 32)
     let sphereMaterial = new MeshStandardMaterial()
     const findMax = (arr: number[]) => {
       return Math.max(...arr);
     };
+
     let camDepth = findMax([$depthS, $heightS, $widthS]) * 3;
   
     $: {
@@ -72,7 +73,7 @@
     
     </Canvas>
     <div>
-      <span>The yellow ball is a point of refrence. The ball have a radius of {radiusFotball}. </span>
+      <span>The yellow ball is a point of refrence. The ball is an average tennisball with a radius of {radiusTennisball}cm. </span>
     </div>
   </div>
   

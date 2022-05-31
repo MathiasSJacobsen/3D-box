@@ -6,29 +6,31 @@
     \label{fig:adobeIll}
 \end{wrapfigure}
 
-\gls{gui} are everywhere and are important for end users. \gls{gui}s connect users to software, and often are perceived as \emph{software}. \gls{gui}s often have input fields of various kinds, such as text boxes, checkboxes, drop-down lists, and so on. All of these different types of input fields oftentimes lead to complex dependencies between the fields and \textit{event handlers}. An event is an action that takes place when the user interacts with the \gls{gui}. A handler is a callback that is executed when the event happens. Consider an example of a graphical editing software, such as Adobe Illustrator\footnote{\url{https://www.adobe.com/no/products/illustrator.html}}.  There, a user can manipulate the following values: absolute height, absolute width, relative height, relative width, each represented by a text box, and a Boolean indicator whether the ratio must be preserved. A change to any of these input fields must result in corresponding changes of other fields: indeed, for instance if the Boolean indicator is set to true, any changes to the width or height fields will be reflected to opposite field. The dependencies of such program are illustrated in \autoref{fig:adobeIll}.
+\gls{gui} are everywhere and are important for end users. \gls{gui}s connect users to software, and often are perceived as \emph{software}. \gls{gui}s often have input fields of various kinds, such as text boxes, checkboxes, drop-down lists, and so on. All of these different types of input fields oftentimes lead to complex dependencies between the fields and \textit{event handlers}. An event is an action that takes place when the user interacts with the \gls{gui}. A handler is a \textit{callback} that is executed when the event happens. A callback is a function that is passed to another function as an argument, with the intension to be invoked inside of the outer function. 
 
-\gls{gui}s are often incorrect, to the point where the user often expect them to be wrong. In \autoref{fig:vaccine}, you can se a simple \gls{gui} form within a questioner. The error message is displayed, although the date on the from is within the specified boundaries.
+Consider an example of a graphical editing software, such as Adobe Illustrator\footnote{\url{https://www.adobe.com/no/products/illustrator.html}}.  There, a user can manipulate the following values: absolute height, absolute width, relative height, relative width, each represented by a text box, and a Boolean indicator whether the ratio must be preserved. A change to any of these input fields must result in corresponding changes of other fields: indeed, for instance if the Boolean indicator is set to true, any changes to the width or height fields will be reflected to opposite field. The dependencies of such program are illustrated in \autoref{fig:adobeIll}.
+
+\gls{gui}s are often incorrect, to the point where the user often expect them to be wrong. In \autoref{fig:vaccine}, one can see a simple \gls{gui} form within a questioner. The error message is displayed, although the date on the from is within the specified boundaries.
 
 \begin{figure}
     \centering
     \includegraphics[scale=0.35, frame]{figures/vaccine.jpeg}
-    \caption{Example of a wrong validator}
+    \caption{Example of a wrong validator.}
     \label{fig:vaccine}
 \end{figure}
 
-The new system used by several universities in Norway, made by \gls{dfø}, has ambiguously formulated question throughout the application. These questions make the application difficult to use, and in certain circumstances, the user is unsure what to click on. One of these questions is presented in the \autoref{fig:DFO} --- however, it is unclear what will happen if either of the buttons is pressed.
+The new system used by several universities in Norway, made by \gls{dfø}, has ambiguously formulated question throughout the application. These questions make the application difficult to use, and in certain circumstances, the user is unsure what to click on. One of these questions is presented in the \autoref{fig:DFO}---however, it is unclear what will happen if either of the buttons is pressed.
 
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.55, frame]{figures/DFO.jpg}
-    \caption{Example of an ambiguously formulated question}
+    \caption{Example of an ambiguously formulated question in a GUI.}
     \label{fig:DFO}
 \end{figure}
 
-There are generally a lot of dependencies between all the fields in \gls{gui}s with forms that the user must fill out. As a result, they are more prone to make errors. One example of this is forms that has mandatory fields, this frequently leads to mistakes in field dependencies. In a form with several phases, you may be instructed to complete all required information before the form allows you to go back a step. This was the case in the registration form for \gls{pldi} conference --- shown in \autoref{fig:PLDI}. The user had to complete all required fields in the current phase before the \gls{gui} enabled the user to return to earlier phases. 
+There are generally a lot of dependencies between all the fields in \gls{gui}s with forms that users must fill out. As a result, they are more prone to make errors. One example of this is forms that has mandatory fields; this frequently leads to mistakes in field dependencies. In a form with several phases, one may be instructed to complete all required information before the form allows one to go back a step. This was the case in the registration form for \gls{pldi} conference---shown in \autoref{fig:PLDI}. The user had to complete all required fields in the current phase before the \gls{gui} enabled the user to return to earlier phases. 
 
-Another example of errors in forms is when the validation has a undesirable behavior. For instance, in the \gls{gui} for applying for Finnish citizenship, with a form for writing down every travel abroad, seen in \autoref{fig:enterfinland}. Due to incorrect validation, the user is unable to erase the first trip. Even though the details provided in the first trip, a validation error is shown, informing the user that the data is incorrect. Therefor, the user have to erase the the hole from, and start all over again.
+Another example of errors in forms is when the validation has a undesirable behavior. Consider, for instance, in the \gls{gui} for applying for Finnish citizenship, with a form for writing down every travel abroad, as shown in \autoref{fig:enterfinland}. Due to incorrect validation, the user is unable to erase the first trip. Even though the values are entered in the input fields related to the first trip, a validation error is shown, informing the user that the data is incorrect. Therefore, the user has to erase the entire from, and start all over again.
 \begin{figure}
     \centering
     \includegraphics[scale=0.2, frame]{figures/PLDI.jpg}
@@ -38,17 +40,17 @@ Another example of errors in forms is when the validation has a undesirable beha
 
 
 \begin{figure}
-    \caption{System for applying for Finnish citizenship}
     \centering
     \includegraphics[scale=0.35, frame]{figures/enterfinland-ui-citizenship-cant-remove-first-trip.png}
+    \caption{System for applying for Finnish citizenship}
     \label{fig:enterfinland}
 \end{figure}
 
-\begin{figure}
-    \centering
-    \includegraphics[scale=0.45]{figures/finnishSkatteetaten.png}
-    \caption{Finnish tax system}
-\end{figure}
+%\begin{figure}
+ %   \centering
+  %  \includegraphics[scale=0.45]{figures/finnishSkatteetaten.png}
+   % \caption{Finnish population information system}
+%\end{figure}
 
 \begin{wrapfigure}{r}{7.1cm}
     \centering
@@ -57,10 +59,10 @@ Another example of errors in forms is when the validation has a undesirable beha
     \label{fig:adobeIllCS}
 \end{wrapfigure}
 
-As previously discussed, \gls{gui}s are usually buggy and incorrect, nearly to the point where users expect errors. In a relatively modest application, dataflow across fields becomes complicated for the programmer. The way \gls{gui}s are developed today, with imperative event handlers that are ran on every user interaction~\cite{all2021multi}, contributes to this. A single error in one of these event handlers might cause a chain of faults in other event handlers. Allowing a constraint system to impose dependencies is one solution. The constraint system handles the logic behind the dataflow, and the programmer is solely responsible for binding the values in the \gls{gui} to the corresponding value in the constraint system. The dependency graph is simplified by allowing the constraint system manage the dependencies --- \autoref{fig:adobeIllCS} is identical to \autoref{fig:adobeIll}, except with the use of a constraint system.
+As previously discussed, \gls{gui}s are usually buggy and incorrect, nearly to the point where users expect errors. In a relatively modest application, dataflow across fields becomes complicated for the programmer. The way \gls{gui}s are developed today, with imperative event handlers that are ran on every user interaction~\cite{all2021multi}, contributes to this. A single error in one of these event handlers might cause a chain of faults in other event handlers. A possible solution is to allow a constraint system to impose dependencies. The constraint system handles the logic behind the dataflow, and the programmer is solely responsible for binding the values in the \gls{gui} to the corresponding value in the constraint system. The dependency graph is simplified by allowing the constraint system manage the dependencies---\autoref{fig:adobeIllCS} is identical to \autoref{fig:adobeIll}, except with the use of a constraint system.
 
-The goal of the project was to understand event-based \gls{gui} programming and the limitation to such programming. Specify dataflow constraints and understand how they connect to \gls{gui} elements. Understand the possibilities and limitations of constraint systems based on \gls{gui}s. Finally, create an application that reflects this. The multiway dataflow constraint system used in the development of this project is HotDrink~\cite{HotDrink1}. Before developing this project I had no prior experience with the constraint system HotDrink.
+The goal of the present project is to understand event-based \gls{gui} programming and the limitation to such programming, specify dataflow constraints and understand how they connect to \gls{gui} elements, understand the possibilities and limitations of constraint systems based on \gls{gui}s, and create an application that reflects this. The multiway dataflow constraint system used in the development of this project is HotDrink~\cite{HotDrink1}. Before developing this project, I had no prior experience with the constraint system HotDrink.
 
-For the later point, we have started the implementation of an \gls{ide} which is aware of the HotDrink language. This will be discussed in more detail in \autoref{chap:discussion}. Hopefull, this will help to the wider adoption of the library.
+We have started the implementation of an \gls{ide} which is aware of the HotDrink language. This will be discussed in more detail in Chapter \ref{chap:discussion}. Hopefully, this will help to the wider adoption of the library.
 
 \textit{This report is part of INF319 project at the \gls{uib}.}

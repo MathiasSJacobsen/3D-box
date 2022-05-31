@@ -1,10 +1,8 @@
 \chapter{Implementation of a parcel sending form}
 
-In this chapter…
-
 \section{Posten}
 The Norwegian post-service handles packages domestically and internationally from 
-and to Norway. A package can in many cases be seen as a box. Thus, we decided to make a web application that would calculate the price for sending a package with Posten. To still keep the application simple, we decided to only support packages sent domestically. Posten measures the height, depth, width and weight of the package, this is used to calculate the price of sending the package. Posten uses the price model~\cite{postenNorgespakken}\footnote{If any of the measures --- height, depth, width --- of the package is larger than the maximum allowed there is a special package fee of 149 NOK.} seen in table~\ref{pricingmodel} for domestic packages.
+and to Norway. A package can in many cases be seen as a box. Thus, we decided to make a web application that would calculate the price for sending a package with Posten. To still keep the application simple, we decided to only support packages sent domestically. Posten measures the height, depth, width and weight of the package, this is used to calculate the price of sending the package. Posten uses the price model\footnote{If any of the measures --- height, depth, width --- of the package is larger than the maximum allowed there is a special package fee of 149 NOK.} seen in table~\ref{pricingmodel} for domestic packages~\cite{postenNorgespakken}.
 
 \begin{lstlisting}[caption={HotDrink logic for determining the price},label=hotdrinkprice, language=hotdrink]
 constraint price {
@@ -60,7 +58,7 @@ constraint price {
 
 
 \section{Svelte}
-In this project, to implement the application we use Svelte. Svelte is a JavaScript framework used for building user interfaces, just like React, Angular, Vue, etc. Where some of these frameworks bulk there work in the browser, Svelte shifts that work onto a compile step~\cite{sveltewebsite}. Svelte is written using TypeScript. Instead of using virtual \gls{dom} Svelte uses build time to covert the code into JavaScript~\cite{sveltedocs}. 
+In this project, to implement the application, we use the Svelte. Svelte is a JavaScript framework used for building user interfaces, just like React, Angular, Vue, etc. Where some of these frameworks bulk there work in the browser, Svelte shifts that work onto a compile step~\cite{sveltewebsite}. Svelte is written using TypeScript. Instead of using virtual \gls{dom} Svelte uses build time to covert the code into JavaScript~\cite{sveltedocs}. 
 
 \section{ThreeJS}
 For better usability of the tool, the box is rendered in 3D using JavaScript library ThreeJS~\cite{threejs}. We use SveltThree~\cite{sveltthree} which is a component library written for Svelte using ThreeJS. 
